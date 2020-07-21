@@ -43,13 +43,13 @@ For instructions on how to write the JSON file for:
 - src: contains source code
 
 ## Currently supported features
-- Having multiple dummy masters
+- Having multiple dummy masters<br>
 ![](Images/multi_masters.jpg)
-- Having multiple buses
+- Having multiple buses<br>
 ![](Images/multi_buses.jpg)
-- Using created and open source verification IPs for testing
+- Using created and open source verification IPs for testing<br>
 ![](Images/IP_VIP.jpg)
-- Using IPs that are not APB or AHB compatible
+- Using IPs that are not APB or AHB compatible<br>
 ![](Images/IP_wrapper.jpg)
 - Auto-generating self-checking testbench
 
