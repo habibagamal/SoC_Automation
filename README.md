@@ -58,7 +58,7 @@ For instructions on how to write the JSON file for:
 
 
 Go [here](https://developer.arm.com/) to download Arm Cortex M0, M3 files<br>
-Check this [poster](DAC&#32;Poster&#32;Presention/poster.pdf) and [video](DAC&#32;Poster&#32;Presention/poster.mp4) presented in DAC 2020 Young Fellowship Program about the project
+Check this [poster](https://drive.google.com/file/d/1GBd_jf6H-ud2rCmiS8y-bdfOldHAYiDl/view?usp=sharing) and [video](https://www.youtube.com/watch?v=QFSN9ta08jg) presented in DAC 2020 Young Fellowship Program about the project
 
 ## Used Projects
 - Arbiter taken from [here](https://github.com/adki/gen_amba)
