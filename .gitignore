@@ -1,0 +1,4 @@
+*.v
+!IPs/**/*.v
+!masters/**/*.v
+.DS_Store

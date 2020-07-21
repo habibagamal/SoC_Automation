@@ -1,0 +1,847 @@
+[
+  {
+    "name": "PWM32",
+    "type": 0,
+    "module_type": "soft",
+    "interface_type": "GEN",
+    "description": "Pusle Width Modulator",
+    "Author":{
+      "name":"Mohamed Shalan",
+      "email":"mshalan@aucegypt.edu"
+    },
+    "files":[
+      "PWM/PWM.v"
+    ],
+    "regs": [
+          {
+              "name": "PRE",
+              "port":"PRE",
+              "description": "clock prescalar",
+              "offset": "4",
+              "size": 32,
+              "access": 0, 
+              "initial_value" : 0
+          },
+          {
+              "name": "TMRCMP1",
+              "port":"TMRCMP1",
+              "description": "PWM Compare register 1 -- period",
+              "offset": "1",
+              "size": 32,
+              "access": 0, 
+              "initial_value" : 0
+          },
+          {
+              "name": "TMRCMP2",
+              "port":"TMRCMP2",
+              "description": "PWM Compare register 1 -- duty cycle",
+              "offset": "2",
+              "size": 32,
+              "access": 0, 
+              "initial_value" : 0
+          }, 
+          {
+              "name": "TMREN",
+              "port":"TMREN",
+              "description": "Enable",
+              "offset": "8",
+              "size": 1,
+              "access": 0, 
+              "initial_value" : 0
+          }
+    ],
+    "connected_to": [
+      {
+        "name": "PWM_VIP",
+        "files":[
+          "PWM/VIP/PWM_VIP.v"
+        ],
+        "placement": "tesbench",
+        "ports":[
+          {
+            "name":"pwm",
+            "conn":"pwm"
+          }, 
+          {
+            "name": "db_reg",
+            "conn": "db_reg"
+          }
+        ],
+        "bus_reset": {
+          "name": "HRESETn",
+          "trig_level": 0
+        }
+      }
+    ],
+    "externals": [
+          {
+              "name": "pwm",
+              "port":"pwm",
+              "description": "PWMO",
+              "size": 1,
+              "input": 0
+          }
+    ],
+    "bus_clock": {
+      "name": "clk"
+    }, 
+    "bus_reset": {
+      "name": "rst",
+      "trig_level": 1
+    }
+  }, 
+
+  {
+    "name": "TIMER32",
+    "type": 1,
+    "module_type": "soft",
+    "interface_type": "GEN",
+    "description": "32-bit Timer",
+    "Author":{
+      "name":"Mohamed Shalan",
+      "email":"mshalan@"
+    },
+    "files":[
+      "timer/TIMER32.v"
+    ],
+    "regs": [
+      {
+        "name": "TMR",
+        "port":"TMR",
+        "description": "Timer 32-bit Counter",
+        "offset": "0",
+        "size": 32,
+        "access": 1, 
+        "initial_value" : 0
+      }, 
+      {
+        "name": "PRE",
+        "port": "PRE",
+        "description": "Clock Prescaler (timer_clk = clk / (PRE+1))",
+        "offset": "1",
+        "size": 32,
+        "access": 0,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "TMRCMP",
+        "port": "TMRCMP",
+        "description": "Timer Compare Register",
+        "offset": "2",
+        "size": 32,
+        "access": 0,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "TMROV",
+        "port": "TMROV",
+        "description": "Timer Overflow Register (TMR>=TMRCMP)",
+        "offset": "3",
+        "size": 1,
+        "access": 1,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "TMROVCLR",
+        "port": "TMROVCLR",
+        "description": "TMROV Clear Register",
+        "offset": "4",
+        "size": 1,
+        "access": 0,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "TMREN",
+        "port": "TMREN",
+        "description": "Timer Enable Register",
+        "offset": "5",
+        "size": 1,
+        "access": 0,
+        "initial_value" : 0
+      }
+    ],
+    
+    "bus_clock": {
+      "name": "clk"
+    }, 
+    "bus_reset": {
+      "name": "rst",
+      "trig_level": 1
+    },
+    "irqs":[
+      {
+      "reg": "TMROV",
+      "trig_level": 1
+      }
+    ]
+  }, 
+
+  {
+    "name": "AHBSRAM",
+    "type": 2,
+    "module_type": "soft",
+    "interface_type": "AHB",
+    "description": "AHB SRAM Interface",
+    "Author":{
+        "name":"Mohamed Shalan",
+        "email":"mshalan@"
+    },
+    "files":[
+      "SRAM/AHBSRAM.v"
+    ],
+    "connected_to": [
+        {
+          "name": "openstriVe_soc_mem",
+          "files":[
+            "SRAM/openstriVe_soc_mem.v"
+          ],
+          "placement": "soc_core",
+          "ports":[
+            {
+              "name":"rdata",
+              "conn":"SRAMRDATA"
+            }, 
+            {
+              "name": "wdata",
+              "conn": "SRAMWDATA"
+            }, 
+            {
+              "name": "addr",
+              "conn":"SRAMADDR"
+            }, 
+            {
+              "name": "ena",
+              "conn": "SRAMCS0"
+            },
+            {
+              "name": "wen",
+              "conn": "SRAMWEN"
+            }
+          ], 
+          "bus_clock":{
+            "name": "clk"
+          }
+        }
+    ],
+    "externals":[
+      {
+        "name": "SRAMRDATA",
+        "port": "SRAMRDATA",
+        "description": "SRAMRDATA",
+        "size": 32,
+        "input": 1, 
+        "conn": "Q"
+      },
+      {
+        "name": "SRAMWEN",
+        "port": "SRAMWEN",
+        "description": "SRAMWEN",
+        "size": 4,
+        "input": 0, 
+        "conn": "wen"
+      },
+      {
+        "name": "SRAMWDATA",
+        "port": "SRAMWDATA",
+        "description": "SRAMWDATA",
+        "size": 32,
+        "input": 0,
+        "conn": "D"
+      },
+      {
+        "name": "SRAMCS0",
+        "port": "SRAMCS0",
+        "description": "SRAMCS0",
+        "size": 1,
+        "input": 0, 
+        "conn": "cen"
+      },
+      {
+        "name": "SRAMCS1",
+        "port": "SRAMCS1",
+        "description": "SRAMCS1",
+        "size": 1,
+        "input": 0
+      },
+      {
+        "name": "SRAMCS2",
+        "port": "SRAMCS2",
+        "description": "SRAMCS2",
+        "size": 1,
+        "input": 0
+      },
+      {
+        "name": "SRAMCS3",
+        "port": "SRAMCS3",
+        "description": "SRAMCS3",
+        "size": 1,
+        "input": 0
+      },
+      {
+        "name": "SRAMADDR",
+        "port": "SRAMADDR",
+        "description": "SRAMADDR",
+        "size": 15,
+        "input": 0, 
+        "conn": "A"
+      }
+    ], 
+    "busInterface":{
+      "HSEL":"HSEL",
+      "HADDR":"HADDR",
+      "HREADY":"HREADY",
+      "HWRITE":"HWRITE",
+      "HTRANS":"HTRANS",
+      "HSIZE": "HSIZE",
+      "HWDATA":"HWDATA",
+      "HRDATA":"HRDATA",
+      "HREADYOUT":"HREADYOUT",
+      "0":"HRESP"
+    }, 
+    "bus_clock": {
+      "name": "HCLK"
+    }, 
+    "bus_reset": {
+      "name": "HRESETn",
+      "trig_level": 0
+    }
+  },
+
+  {
+    "name": "GPIO",
+    "type": 3,
+    "module_type": "soft",
+    "interface_type": "GEN",
+    "description": "16-bit General Purpose I/O (GPIO)",
+    "Author":{
+        "name":"Mohamed Shalan",
+        "email":"mshalan@"
+    },
+    "files":[
+      "GPIO/GPIO.v"
+    ],
+    "regs" :[
+      {
+        "name": "WGPIODIN",
+        "port": "WGPIODIN",
+        "description": "Data In Register",
+        "offset": "0",
+        "size": 16,
+        "access": 1,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "WGPIODOUT",
+        "port": "WGPIODOUT",
+        "description": "Data Out Register",
+        "offset": "1",
+        "size": 16,
+        "access": 0,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "WGPIOPU",
+        "port": "WGPIOPU",
+        "description": "Pullup Enable Register",
+        "offset": "2",
+        "size": 16,
+        "access": 0,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "WGPIOPD",
+        "port": "WGPIOPD",
+        "description": "Pulldown Enable Register",
+        "offset": "3",
+        "size": 16,
+        "access": 0,
+        "initial_value" : 0
+      }, 
+      {
+        "name": "WGPIODIR",
+        "port": "WGPIODIR",
+        "description": "Output Enable Register (Direction)",
+        "offset": "4",
+        "size": 16,
+        "access": 0,
+        "initial_value" : 0
+      } 
+    ],
+    "connected_to": [
+      {
+        "name": "GPIO_VIP",
+        "files":[
+          "GPIO/VIP/GPIO_VIP.v"
+        ],
+        "placement": "tesbench",
+        "ports":[
+          {
+            "name":"GPIOOUT",
+            "conn":"GPIOOUT"
+          }
+        ]
+      }
+    ],
+    "externals": [
+      {
+        "name": "GPIOIN",
+        "port": "GPIOIN",
+        "description": "GPIOIN",
+        "size": 16,
+        "input": 1
+      },
+      {
+        "name": "GPIOOUT",
+        "port": "GPIOOUT",
+        "description": "GPIOOUT",
+        "size": 16,
+        "input": 0
+      },
+      {
+        "name": "GPIOPU",
+        "port": "GPIOPU",
+        "description": "GPIOPU",
+        "size": 16,
+        "input": 0
+      },
+      {
+        "name": "GPIOPD",
+        "port": "GPIOPD",
+        "description": "GPIOPD",
+        "size": 16,
+        "input": 0
+      },
+      {
+        "name": "GPIOOEN",
+        "port": "GPIOOEN",
+        "description": "GPIOOEN",
+        "size": 16,
+        "input": 0
+      }
+    ]
+  }, 
+
+  {
+    "name": "UART_SF",
+    "type": 4,
+    "module_type": "soft",
+    "interface_type": "GEN",
+    "description": "Simple UART with RX and TX FIFOs",
+    "Author":{
+        "name":"Mohamed Shalan",
+        "email":"mshalan@"
+    },
+    "files":[
+      "UART/UART_SF.v"
+    ],
+    "regs" :[
+      {
+        "name": "TX_DATA",
+        "port": "tx_byte",
+        "description": "8-bit data to transmit",
+        "offset": "0",
+        "size": 8,
+        "access": 0,
+        "initial_value" : 0,
+        "access_pulse": "transmit"
+      }, 
+      {
+        "name": "RX_DATA",
+        "port": "rx_byte",
+        "description": "8-bit received data",
+        "offset": "1",
+        "size": 8,
+        "access": 1,
+        "access_pulse": "rx_fifo_pop"
+      }, 
+      {
+        "name": "STATUS",
+        "port":"STATUS",
+        "description": "UART Status Register",
+        "offset": "2",
+        "size": 5,
+        "access": 1,
+        "fields": [
+          {
+            "name": "busy",
+            "size": 1,
+            "offset": 0,
+            "description": "UART Busy transmitting and/or receiving"
+          },
+          {
+            "name": "tx_fifo_full",
+            "size": 1,
+            "offset": 1,
+            "description": "TX FIFO is full"
+          },
+          {
+            "name": "tx_fifo_empty",
+            "size": 1,
+            "offset": 2,
+            "description": "TX FIFO is empty"
+          },
+          {
+            "name": "rx_fifo_full",
+            "size": 1,
+            "offset": 3,
+            "description": "RX FIFO is full"
+          },
+          {
+            "name": "rx_fifo_empty",
+            "size": 1,
+            "offset": 4,
+            "description": "RX FIFO is empty"
+          }
+        ]
+      }
+    ], 
+    "bus_clock": {
+      "name": "clk"
+    }, 
+    "bus_reset": {
+      "name": "rst",
+      "trig_level": 0
+    }
+  },
+  
+  {
+    "name": "QSPIXIP",
+    "type": 5,
+    "module_type": "soft",
+    "interface_type": "AHB",
+    "description": "QSPIXIP",
+    "Author":{
+      "name":"Mohamed Shalan",
+      "email":"mshalan@aucegypt.edu"
+    },
+    "files":[
+      "flash/controller/qspi_xip_cache_ahb.v"
+    ],
+    "connected_to": [
+      {  
+        "name": "sst26wf080b",
+        "inst_name": "flash",
+        "placement": "testbench",
+        "files":[
+          "flash/SST26WF080B.v"
+        ],
+        "required_lines": [
+          {
+            "signals":[
+              "fdoe",
+              "fdo",
+              "fdi"
+            ],
+            "line": "wire [3:0] fdio = fdoe ? fdo : 4'bzzzz; assign fdi = fdio;"
+          }
+        ],
+        "ports":[
+          {
+            "name":"SCK",
+            "conn":"fsclk"
+          }, 
+          {
+            "name": "SIO",
+            "conn_created": "fdio"
+          }, 
+          {
+            "name": "CEb",
+            "conn":"fcen"
+          }
+        ]
+      }
+    ],
+    "externals": [
+        {
+        "name": "fdi",
+        "port": "fdi",
+        "description": "fdi",
+        "size": 4,
+        "input": 1
+      },
+      {
+        "name": "fdo",
+        "port":"fdo",
+        "description": "fdo",
+        "size": 4,
+        "input": 0
+      },   
+      {
+        "name": "fdoe",
+        "port":"fdoe",
+        "description": "fdoe",
+        "size": 4,
+        "input": 0
+      }, 
+      {
+          "name": "fsclk",
+          "port":"fsclk",
+        "description": "fsclk",
+        "size": 1,
+        "input": 0
+      }, 
+      {
+          "name": "fcen",
+          "port":"fcen",
+        "description": "fcen",
+        "size": 1,
+        "input": 0
+      }
+  ],
+  "busInterface":
+    {
+      "HSEL":"HSEL",
+      "HADDR":"HADDR",
+      "HREADY":"HREADY",
+      "HWRITE":"HWRITE",
+      "HTRANS":"HTRANS",
+      "HSIZE":"HSIZE",
+      "HWDATA": null,
+      "HRDATA":"HRDATA",
+      "HREADYOUT":"HREADYOUT",
+      "HRESP": null
+    },
+  "bus_clock": {
+    "name": "HCLK"
+  }, 
+  "bus_reset": {
+    "name": "HRESETn",
+    "trig_level": 0
+  }
+  },
+
+  {
+    "name": "APB2I2C",
+    "type": 6,
+    "module_type": "soft",
+    "interface_type": "APB",
+    "description": "I2C with APB Interface",
+    "Author":{
+      "name":"Mohamed Shalan",
+      "email":"mshalan@aucegypt.edu"
+    },
+    "files":[
+      "i2c/i2c.v",
+      "i2c/apb2i2c.v"
+    ],
+    "externals": [
+        {
+        "name": "scl_i",
+        "port": "scl_i",
+        "description": "SCL-line input",
+        "size": 1,
+        "input": 1
+      },
+      {
+        "name": "scl_o",
+        "port":"scl_o",
+        "description": "SCL-line output (always 1'b0)",
+        "size": 1,
+        "input": 0
+      }, 
+      {
+          "name": "scl_oen_o",
+          "port":"scl_oen_o",
+        "description": "SCL-line output enable (active low)",
+        "size": 1,
+        "input": 0
+      }, 
+      {
+          "name": "sda_i",
+          "port":"sda_i",
+        "description": "SDA-line input",
+        "size": 1,
+        "input": 1
+      }, 
+      {
+          "name": "sda_o",
+          "port":"sda_o",
+        "description": "SDA-line output (always 1'b0)",
+        "size": 1,
+        "input": 0
+      }, 
+      {
+          "name": "sda_oen_o",
+          "port":"sda_oen_o",
+        "description": "SDA-line output enable (active low)",
+        "size": 1,
+        "input": 0
+      }
+  ],
+  
+  "busInterface":
+    {
+      "PSEL":"PSEL",
+      "PADDR":"PADDR",
+      "PENABLE":"PENABLE",
+      "PWRITE":"PWRITE",
+      "PWDATA": "PWDATA",
+      "PRDATA":"PRDATA",
+      "PREADY":"PREADY"
+    },
+  "bus_clock": {
+    "name": "PCLK"
+  }, 
+  "bus_reset": {
+    "name": "PRESETn",
+    "trig_level": 0
+  }
+  },
+
+  {
+    "name": "APB2SPI",
+    "type": 7,
+    "module_type": "soft",
+    "interface_type": "APB",
+    "description": "SPI with APB interface",
+    "Author":{
+      "name":"Mohamed Shalan",
+      "email":"mshalan@aucegypt.edu"
+    }, 
+    "files":[
+      "SPI/apb2spi.v",
+      "SPI/spi_master.v"
+    ],
+    "externals": [
+          {
+              "name": "MSI",
+              "port":"MSI",
+              "description": "MSI",
+              "size": 1,
+              "input": 1
+          },
+          {
+              "name": "MSO",
+              "port":"MSO",
+              "description": "MSO",
+              "size": 1,
+              "input": 0
+          },
+          {
+            "name": "SSn",
+            "port":"SSn",
+            "description": "SSn: ~SPI_CTRL_REG[1]",
+            "size": 1,
+            "input": 0
+          },
+          {
+              "name": "SCLK",
+              "port":"SCLK",
+              "description": "SCLK",
+              "size": 1,
+              "input": 0
+          }
+      ], 
+      "connected_to": [
+        {  
+          "name": "M23LC512",
+          "files":[
+            "SPI/VIPs/23LC512.v"
+          ],
+          "placement": "tesbench",
+          "required_lines": [
+            {
+              "line": "wire spi_flash_hold; assign spi_flash_hold = 1'b1;"
+            }
+          ],
+          "ports":[
+            {
+              "name":"SO_SIO1",
+              "conn":"MSI"
+            }, 
+            {
+              "name": "SI_SIO0",
+              "conn": "MSO"
+            }, 
+            {
+              "name": "CS_N",
+              "conn":"SSn"
+            }, 
+            {
+              "name": "SCK",
+              "conn":"SCLK"
+            },
+            {
+              "name": "HOLD_N_SIO3",
+              "conn_created":"spi_flash_hold"
+            }
+          ],
+          "bus_reset": {
+            "name": "RESET",
+            "trig_level": 1
+          }
+        }
+      ],
+      "busInterface":
+      {
+        "PSEL":"PSEL",
+        "PADDR":"PADDR",
+        "PENABLE":"PENABLE",
+        "PWRITE":"PWRITE",
+        "PWDATA": "PWDATA",
+        "PRDATA":"PRDATA",
+        "PREADY":"PREADY"
+      },
+      "bus_clock": {
+          "name": "PCLK"
+      }, 
+      "bus_reset": {
+          "name": "PRESETn",
+          "trig_level": 0
+      }
+  },
+
+  {
+    "name": "AHB2MEM",
+    "type": 8,
+    "module_type": "soft",
+    "interface_type": "AHB",
+    "description": "AHB2MEM",
+    "Author":{
+      "name":"Mohamed Shalan",
+      "email":"mshalan@aucegypt.edu"
+    },
+    "files":[
+      "SRAM/AHB2MEM.v"
+    ],
+  "busInterface":
+    {
+      "HSEL":"HSEL",
+      "HADDR":"HADDR",
+      "HREADY":"HREADY",
+      "HWRITE":"HWRITE",
+      "HTRANS":"HTRANS",
+      "HSIZE":"HSIZE",
+      "HWDATA": "HWDATA",
+      "HRDATA":"HRDATA",
+      "HREADYOUT":"HREADYOUT",
+      "0": "HRESP"
+    },
+  "bus_clock": {
+    "name": "HCLK"
+  }, 
+  "bus_reset": {
+    "name": "HRESETn",
+    "trig_level": 0
+  }
+  },
+
+  {
+    "name": "db_reg",
+    "type": 9,
+    "module_type": "debug",
+    "interface_type": "GEN",
+    "description": "debug register",
+    "regs":[
+      {
+        "name": "db_reg",
+        "port":"db_reg",
+        "description": "debug register",
+        "offset": "0",
+        "size": 4,
+        "access": 0, 
+        "initial_value" : 0
+      }
+    ]
+  }
+]

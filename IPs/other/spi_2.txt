@@ -1,0 +1,1 @@
+https://github.com/freecores/turbo8051/tree/master/rtl/spi

@@ -1,0 +1,73 @@
+{
+	"design": "Raptor_GF130",
+    "license": 1,
+    "version": "1.0",
+    "release_date": {
+        "day": 1,
+        "month": 5,
+        "year": 2020
+    },
+    "designer": {
+        "name": "Mohamed Shalan",
+        "email": "mshalan@a"
+	},
+	"masters_type": 1,
+	"masters":[
+		{ 
+			"id": "0",
+			"cfg": {
+				"mul": 1, 
+				"irq": 32
+			}
+		}
+	],
+	"address_space":32,
+	"page_bits": 8,
+	"testbench":
+	{
+		"hex_file": "main.hex",
+		"load_into": "uut.flash.I0.memory",
+		"ticks": 100000,
+		"vcd": "real_dump.vcd"
+	},
+	"buses":[
+		{
+			"id": 0,
+			"type": 0,
+			"starting_page":"0",
+			"number_of_pages":4,
+			"masters": ["0"],
+			"slaves":[
+			    {
+					"type": 5,
+					"description": "QSPI connected to flash",
+		            "page": "00", 
+		            "cfg":{
+					},
+					"connected_to": 0
+			    },
+			    {
+					"type": 2,
+					"description": "AHBSRAM connected to SRAM_8Kx32",
+		            "page": "20", 
+		            "cfg":{
+					},
+					"connected_to": 0
+				},
+			    {
+					"type": 9,
+					"description": "debug register",
+		            "page": "77", 
+		            "cfg":{
+					}
+			    }
+			], 
+			"subsystems":[
+				{
+		            "id": 0,
+					"page":"40"
+	    		}
+			]
+		}	
+	]
+}

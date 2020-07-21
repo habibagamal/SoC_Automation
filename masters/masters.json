@@ -1,0 +1,306 @@
+[
+    {
+        "name":"Cm0",
+        "module_name": "CORTEXM0DS",
+        "id": "0",
+        "bus_type": 0,
+        "files":[
+            "CM0/cm0.v"
+        ],
+        "bus_interface":
+        [
+            {
+                "master_port": "HADDR",
+                "bus_connection": "HADDR",
+                "size": "address_size"
+            },
+            {
+                "master_port": "HREADY",
+                "bus_connection": "HREADY",
+                "size": 1
+            }, 
+            {
+                "master_port": "HWRITE",
+                "bus_connection": "HWRITE",
+                "size": 1
+            }, 
+            {
+                "master_port": "HTRANS",
+                "bus_connection": "HTRANS",
+                "size": 2
+            },
+            {
+                "master_port":  "HSIZE",
+                "bus_connection": "HSIZE",
+                "size": 3
+            },
+            {
+                "master_port": "HWDATA",
+                "bus_connection": "HWDATA",
+                "size": 32
+            },
+            {
+                "master_port": "HRDATA",
+                "bus_connection": "HRDATA",
+                "size": 32
+            }, 
+            {
+                "master_port": "HRESP",
+                "bus_connection": 0,
+                "size": 1
+            }
+        ],
+        "bus_clock":{
+            "name": "HCLK"
+        },
+        "bus_reset":{
+            "name": "HRESETn",
+            "trig_level": 0 
+        },
+        "ports":[
+            {
+                "name": "TXEV", 
+                "input": 0,
+                "size": 1,
+                "default_connection": null
+            }, 
+            {
+                "name": "RXEV", 
+                "input": 1,
+                "size": 1, 
+                "default_connection": 0
+            }, 
+            {
+                "name": "LOCKUP", 
+                "input": 0, 
+                "size": 1,
+                "default_connection": null
+            },
+            {
+                "name": "SYSRESETREQ", 
+                "input": 0, 
+                "size": 1,
+                "default_connection": null
+            }, 
+            {
+                "name": "STCLKEN", 
+                "input": 1, 
+                "size": 1,
+                "default_connection": 0
+            },
+            {
+                "name": "SLEEPING",
+                "default_connection": null, 
+                "input": 0
+            },
+            {
+                "name": "STCALIB", 
+                "size": 26,
+                "default_connection": 0, 
+                "input": 1
+            }
+        ],
+        "interrupts":[
+            {
+                "name": "NMI",
+                "size": 1,
+                "default_connection": 0
+            }
+        ] 
+
+    }, 
+
+    {
+        "name":"Cm3",
+        "module_name": "CM3_SYS",
+        "id": "1",
+        "bus_type": 0,
+        "files":[
+            "CM3/CM3_SYS.v",
+            "CM3/ahb_master_mux.v",
+            "CM3/cortexm3ds_logic.v",
+            "CM3/CORTEXM3INTEGRATIONDS.v"
+        ],
+        "bus_interface":
+        [
+            {
+                "master_port": "HADDR",
+                "bus_connection": "HADDR",
+                "size": "address_size"
+            },
+            {
+                "master_port": "HREADYOUT",
+                "bus_connection": "HREADY",
+                "size": 1
+            }, 
+            {
+                "master_port": "HREADY",
+                "bus_connection": null,
+                "size": 1
+            }, 
+            {
+                "master_port": "HWRITE",
+                "bus_connection": "HWRITE",
+                "size": 1
+            }, 
+            {
+                "master_port": "HTRANS",
+                "bus_connection": "HTRANS",
+                "size": 2
+            },
+            {
+                "master_port": "HSIZE",
+                "bus_connection":  "HSIZE",
+                "size": 3
+            },
+            {
+                "master_port": "HWDATA",
+                "bus_connection": "HWDATA",
+                "size": 32
+            },
+            {
+                "master_port": "HRDATA",
+                "bus_connection": "HRDATA",
+                "size": 32
+            }, 
+            {
+                "master_port": "HRESP",
+                "bus_connection": 0,
+                "size": 2
+            }
+        ],
+        "bus_clock":{
+            "name": "HCLK"
+        },
+        "bus_reset":{
+            "name": "HRESETn",
+            "trig_level": 0 
+        },
+        "ports":[
+            {
+                "name": "nTRST", 
+                "input": 1,
+                "size": 1,
+                "default_connection": 0
+            }, 
+            {
+                "name": "SWDITMS", 
+                "input": 1,
+                "size": 1, 
+                "default_connection": 0
+            }, 
+            {
+                "name": "SWCLKTCK", 
+                "input": 1, 
+                "size": 1,
+                "default_connection": 0
+            },
+            {
+                "name": "TDI", 
+                "input": 1, 
+                "size": 1,
+                "default_connection": 0
+            }, 
+            {
+                "name": "TDO", 
+                "input": 0, 
+                "size": 1,
+                "default_connection": null
+            },
+            {
+                "name": "nTDOEN", 
+                "input": 0, 
+                "size": 1,
+                "default_connection": null
+            }, 
+            {
+                "name": "PORESETn", 
+                "input": 0, 
+                "size": 1,
+                "default_connection": "HRESETn"
+            },
+            {
+                "name": "INTISR", 
+                "input": 0, 
+                "size": 240,
+                "default_connection": 0
+            }
+        ]
+    },
+
+    {
+        "name":"N5",
+        "module_name": "NfiVe32",
+        "id": "2",
+        "bus_type": 0,
+        "files":[
+            "N5/NfiVe.v"
+        ],
+        "bus_interface":
+        [
+            {
+                "master_port": "HADDR",
+                "bus_connection": "HADDR",
+                "size": "address_size"
+            },
+            {
+                "master_port": "HREADY",
+                "bus_connection": "HREADY",
+                "size": 1
+            }, 
+            {
+                "master_port": "HWRITE",
+                "bus_connection": "HWRITE",
+                "size": 1
+            }, 
+            {
+                "master_port": "HTRANS",
+                "bus_connection": "HTRANS",
+                "size": 2
+            },
+            {
+                "master_port": "HSIZE",
+                "bus_connection":  "HSIZE",
+                "size": 3
+            },
+            {
+                "master_port": "HWDATA",
+                "bus_connection": "HWDATA",
+                "size": 32
+            },
+            {
+                "master_port": "HRDATA",
+                "bus_connection": "HRDATA",
+                "size": 32
+            }
+        ],
+        "bus_clock":{
+            "name": "HCLK"
+        },
+        "bus_reset":{
+            "name": "HRESETn",
+            "trig_level": 0 
+        },
+        "ports":[
+            {
+                "name": "IRQ_NUM", 
+                "input": 1,
+                "size": 5,
+                "default_connection": 0
+            }, 
+            {
+                "name": "SYSTICKCLK", 
+                "input": 1,
+                "size": 1, 
+                "default_connection": 0
+            }
+        ],
+        "interrupts":[
+            {
+                "name": "NMI",
+                "size": 1,
+                "default_connection": 0
+            }
+        ]
+    }
+]
