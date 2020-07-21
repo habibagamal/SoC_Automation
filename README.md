@@ -56,10 +56,9 @@ For instructions on how to write the JSON file for:
 ## Flow
 ![](Images/flow.jpg)
 
-## Note
-- Go [here](https://developer.arm.com/) to download Arm Cortex M0, M3 files 
 
-Check this [poster](DAC&#32;Poster&#32;Presention/poster.pdf) and [video](DAC&#32;Poster&#32;Presention/poster.mp4) presented in DAC 2020 Young Fellowship Program about the project.
+Go [here](https://developer.arm.com/) to download Arm Cortex M0, M3 files<br>
+Check this [poster](DAC&#32;Poster&#32;Presention/poster.pdf) and [video](DAC&#32;Poster&#32;Presention/poster.mp4) presented in DAC 2020 Young Fellowship Program about the project
 
 ## Used Projects
 - Arbiter taken from [here](https://github.com/adki/gen_amba)
