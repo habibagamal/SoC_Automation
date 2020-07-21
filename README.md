@@ -57,7 +57,7 @@ For instructions on how to write the JSON file for:
 ![](Images/flow.jpg)
 
 ## System Block Diagram
-This diagram represents [this](./systems/CM0/Raptor)<br>
+This diagram represents [this example](./systems/CM0/Raptor)<br>
 ![](Images/SoC.jpg)
 
 Go [here](https://developer.arm.com/) to download Arm Cortex M0, M3 files<br>
