@@ -1,35 +1,50 @@
 /*
-     _   _  __ ___     __   _________  
-    | \ | |/ _(_) \   / /__|___ /___ \ 
-    |  \| | |_| |\ \ / / _ \ |_ \ __) |
-    | |\  |  _| | \ V /  __/___) / __/ 
-    |_| \_|_| |_|  \_/ \___|____/_____|
-                                                                            
-	A One day project - Cairo May 2, 2020 
-	By Mohamed Shalan (mshalan@aucegypt.edu) 
+ 	 _   _  __ ___     __   _________  
+	| \ | |/ _(_) \   / /__|___ /___ \ 
+	|  \| | |_| |\ \ / / _ \ |_ \ __) |
+	| |\  |  _| | \ V /  __/___) / __/ 
+	|_| \_|_| |_|  \_/ \___|____/_____|
 
-    NfiVe32 is area optimized RV32IC core with the following features:
-		* Target clock frequency > 100MHz
-        * CPI ~ 3
-        * ASIC cell count: < 10K including the RF (< 4KB w/o the RF)
-            + XU : ~1800 ASIC Cells
-            + FU : ~350 ASIC Cells 
-        * Instruction Cycles (3/4)
-		    + C0 : Fetch and Decompress, 
-		    + C1 : Fetch cyle 2; optional, only used for unaligned 32-bit instructions
-            + C2 : RF read, ALU & Branch, 
-            + C3: Memory & RF write-back
-        * A single AHB-Lite Master interface for both instructions and data
-		    * Instr: A(C3), I(C0)
-            * Data: A(C2), D(C3)
-    To do:
-        * [X] Exception Handeling + PIC
-        * [X] Bus wait states
-        * [X] Some Performance counters (CYCLE and INSTRET)
-        * [X] Systick timer
-        * [] Extensions (SPM and Division) - will add around 3.5K ASIC cells 
-        * [] Wait for Interrupt Instruction (wfi)
-        * [] Comprehensive testing
+	A One day project - Cairo May 2, 2020 
+	By Mohamed Shalan (mshalan@aucegypt.edu)
+	
+	Copyright 2020 Mohamed Shalan
+	Licensed under the Apache License, Version 2.0 (the "License"); 
+	you may not use this file except in compliance with the License. 
+	You may obtain a copy of the License at:
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software 
+	distributed under the License is distributed on an "AS IS" BASIS, 
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+	See the License for the specific language governing permissions and 
+	limitations under the License.
+*/
+/*
+	NfiVe32 is area optimized RV32IC core with the following features:
+	* Target clock frequency > 100MHz in 130nm technologies
+	* CPI ~ 3
+	* ASIC cell count: < 10K including the RF (< 4KB w/o the RF)
+	    + XU : ~1800 ASIC Cells
+	    + FU : ~350 ASIC Cells 
+	* Instruction Cycles (3/4)
+	    + C0 : Fetch and Decompress, 
+	    + C1 : Fetch cyle 2; optional, only used for unaligned 32-bit instructions
+	    + C2 : RF read, ALU & Branch, 
+	    + C3 : Memory & RF write-back
+	* A single AHB-Lite Master interface for both instructions and data
+	    + Instr: A(C3), I(C0)
+	    + Data: A(C2), D(C3)
+
+	To do:
+	* [X] Exception Handeling + PIC
+	* [X] Bus wait states
+	* [X] Some Performance counters (CYCLE and INSTRET)
+	* [X] Systick timer
+	* [] Extensions (SPM and Division) - will add around 3.5K ASIC cells 
+	* [] Wait for Interrupt Instruction (wfi)
+	* [] Comprehensive testing
 */
 
 
