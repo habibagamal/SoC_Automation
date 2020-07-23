@@ -1,2 +1,0 @@
-Create AHB-Lite interface for the SHA3 accelerator
-https://github.com/freecores/sha3

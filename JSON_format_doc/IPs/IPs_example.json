@@ -1,0 +1,259 @@
+[
+    {
+      "name": "PWM32",
+      "type": 0,
+      "module_type": "soft",
+      "interface_type": "GEN",
+      "description": "Pusle Width Modulator",
+      "Author":{
+        "name":"Mohamed Shalan",
+        "email":"mshalan@aucegypt.edu"
+      },
+      "files":[
+        "timers.v"
+      ],
+      "regs": [
+            {
+                "name": "PRE",
+                "port":"PRE",
+                "description": "clock prescalar",
+                "offset": "4",
+                "size": 32,
+                "access": 0, 
+                "initial_value" : 0
+            },
+            {
+                "name": "TMRCMP1",
+                "port":"TMRCMP1",
+                "description": "PWM Compare register 1 -- period",
+                "offset": "1",
+                "size": 32,
+                "access": 0, 
+                "initial_value" : 0
+            },
+            {
+                "name": "TMRCMP2",
+                "port":"TMRCMP2",
+                "description": "PWM Compare register 1 -- duty cycle",
+                "offset": "2",
+                "size": 32,
+                "access": 0, 
+                "initial_value" : 0
+            }, 
+            {
+                "name": "TMREN",
+                "port":"TMREN",
+                "description": "Enable",
+                "offset": "8",
+                "size": 1,
+                "access": 0, 
+                "initial_value" : 0
+            }
+      ],
+      "externals": [
+            {
+                "name": "pwm",
+                "port":"pwm",
+                "description": "PWMO",
+                "size": 1,
+                "input": 0
+            }
+      ],
+      "bus_clock": {
+        "name": "clk"
+      }, 
+      "bus_reset": {
+        "name": "rst",
+        "trig_level": 1
+      }
+    }, 
+
+    
+    
+    
+    {
+        "name": "QSPIXIP",
+        "type": 1,
+        "module_type": "soft",
+        "interface_type": "AHB",
+        "description": "QSPIXIP",
+        "Author":{
+          "name":"Mohamed Shalan",
+          "email":"mshalan@aucegypt.edu"
+        },
+        "files":[
+          "flash/qspi_xip_cache_ahb.v"
+        ],
+        "connected_to": [
+          {  
+            "name": "sst26wf080b",
+            "inst_name": "flash",
+            "files":[
+              "flash/SST26WF080B.v"
+            ],
+            "required_lines": [
+              {
+                "signals":[
+                  "fdoe",
+                  "fdo",
+                  "fdi"
+                ],
+                "line": "wire [3:0] fdio = fdoe ? fdo : 4'bzzzz; assign fdi = fdio;"
+              }
+            ],
+            "ports":[
+              {
+                "name":"SCK",
+                "conn":"fsclk"
+              }, 
+              {
+                "name": "SIO",
+                "conn_created": "fdio"
+              }, 
+              {
+                "name": "CEb",
+                "conn":"fcen"
+              }
+            ]
+          }
+        ],
+        "externals": [
+            {
+            "name": "fdi",
+            "port": "fdi",
+            "description": "fdi",
+            "size": 4,
+            "input": 1
+          },
+          {
+            "name": "fdo",
+            "port":"fdo",
+            "description": "fdo",
+            "size": 4,
+            "input": 0
+          },   
+          {
+            "name": "fdoe",
+            "port":"fdoe",
+            "description": "fdoe",
+            "size": 4,
+            "input": 0
+          }, 
+          {
+              "name": "fsclk",
+              "port":"fsclk",
+            "description": "fsclk",
+            "size": 1,
+            "input": 0
+          }, 
+          {
+              "name": "fcen",
+              "port":"fcen",
+            "description": "fcen",
+            "size": 1,
+            "input": 0
+          }
+      ],
+      "busInterface":
+        {
+          "HSEL":"HSEL",
+          "HADDR":"HADDR",
+          "HREADY":"HREADY",
+          "HWRITE":"HWRITE",
+          "HTRANS":"HTRANS",
+          "HSIZE":"HSIZE",
+          "HWDATA": null,
+          "HRDATA":"HRDATA",
+          "HREADYOUT":"HREADYOUT",
+          "HRESP": null
+        },
+      "bus_clock": {
+        "name": "HCLK"
+      }, 
+      "bus_reset": {
+        "name": "HRESETn",
+        "trig_level": 0
+      }
+    },
+    
+    
+    
+    
+    {
+        "name": "APB2I2C",
+        "type": 2,
+        "module_type": "soft",
+        "interface_type": "APB",
+        "description": "I2C with APB Interface",
+        "Author":{
+          "name":"Mohamed Shalan",
+          "email":"mshalan@aucegypt.edu"
+        },
+        "files":[
+          "i2c/i2c.v",
+          "wrappers/apb2i2c.v"
+        ],
+        "externals": [
+            {
+            "name": "scl_i",
+            "port": "scl_i",
+            "description": "SCL-line input",
+            "size": 1,
+            "input": 1
+          },
+          {
+            "name": "scl_o",
+            "port":"scl_o",
+            "description": "SCL-line output (always 1'b0)",
+            "size": 1,
+            "input": 0
+          }, 
+          {
+              "name": "scl_oen_o",
+              "port":"scl_oen_o",
+            "description": "SCL-line output enable (active low)",
+            "size": 1,
+            "input": 0
+          }, 
+          {
+              "name": "sda_i",
+              "port":"sda_i",
+            "description": "SDA-line input",
+            "size": 1,
+            "input": 1
+          }, 
+          {
+              "name": "sda_o",
+              "port":"sda_o",
+            "description": "SDA-line output (always 1'b0)",
+            "size": 1,
+            "input": 0
+          }, 
+          {
+              "name": "sda_oen_o",
+              "port":"sda_oen_o",
+            "description": "SDA-line output enable (active low)",
+            "size": 1,
+            "input": 0
+          }
+      ],
+      
+      "busInterface":
+        {
+          "PSEL":"PSEL",
+          "PADDR":"PADDR",
+          "PENABLE":"PENABLE",
+          "PWRITE":"PWRITE",
+          "PWDATA": "PWDATA",
+          "PRDATA":"PRDATA",
+          "PREADY":"PREADY"
+        },
+      "bus_clock": {
+        "name": "PCLK"
+      }, 
+      "bus_reset": {
+        "name": "PRESETn",
+        "trig_level": 0
+      }
+    }
+]

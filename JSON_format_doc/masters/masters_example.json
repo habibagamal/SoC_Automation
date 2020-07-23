@@ -1,0 +1,74 @@
+[
+  {
+      "name":"Cm0",
+      "module_name": "CORTEXM0DS",
+      "id": "0",
+      "bus_type": 0,
+      "files":[
+          "CM0/cm0.v",
+          "main.hex"
+      ],
+      "bus_clock":{
+          "name": "HCLK"
+      },
+      "bus_reset":{
+          "name": "HRESETn",
+          "trig_level": 0 
+      },
+      "signals":[
+          {
+              "name": "TXEV", 
+              "input": 0,
+              "size": 1,
+              "default_connection": null
+          }, 
+          {
+              "name": "RXEV", 
+              "input": 1,
+              "size": 1, 
+              "default_connection": 0
+          }, 
+          {
+              "name": "LOCKUP", 
+              "input": 0, 
+              "size": 1,
+              "default_connection": null
+          },
+          {
+              "name": "SYSRESETREQ", 
+              "input": 0, 
+              "size": 1,
+              "default_connection": null
+          }, 
+          {
+              "name": "STCLKEN", 
+              "input": 1, 
+              "size": 1,
+              "default_connection": 0
+          }
+      ],
+      "power_mgmt":[
+          {
+              "name": "SLEEPING",
+              "default_connection": null, 
+              "input": 0
+          }
+      ], 
+      "regs": [
+          {
+              "name": "STCALIB", 
+              "size": 26,
+              "default_connection": 0, 
+              "input": 1
+          }
+      ],
+      "interrupts":[
+          {
+              "name": "NMI",
+              "size": 1,
+              "default_connection": 0
+          }
+      ] 
+
+  }
+]
