@@ -2,6 +2,7 @@
 
 This program automates SoC design. It expect json input and it outputs verilog files for the SoC and its testbench. 
 Currently it supports AMBA AHB for the high-speed (main) bus and APB for the low speed peripherals bus. 
+We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to produce the final GDS2. 
 
 ## Getting Started
 
