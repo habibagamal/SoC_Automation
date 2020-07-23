@@ -1,0 +1,60 @@
+[
+    {
+        "name":"string field for instantiation name",
+
+        "module_name": "string field for name of master module",
+
+        "id": "string field for master id",
+
+        "bus_type": numerical field (0 means AHB, 1 means APB),
+
+        "files":[
+            "filename1",
+            "filename2", ...
+        ],
+
+        "bus_clock":{
+            "name": "string field for port name of clock of master module"
+        },
+
+        "bus_reset":{
+            "name": "string field for port name of reset of master module",
+            "trig_level": numerical field for triggering level of reset (0: active low, 1: active high)
+        },
+        
+        "signals":[
+            {
+                "name": "string field for signal port name", 
+                "input": numerical field (0: output, 1: input),
+                "size": numerical field for size in bits of port,
+                "default_connection": numerical field describing connection of field or "string for bus signal connection"
+            }, ...
+        ],
+
+        "power_mgmt":[
+            {
+                "name": "string field for power management port name",
+                "input": numerical field (0: output, 1: input),
+                "default_connection": numerical field describing connection of field or "string for bus signal connection"
+            }, ...
+        ], 
+
+        "regs": [
+            {
+                "name": "string field for register port name",
+                "input": numerical field (0: output, 1: input),
+                "size": numerical field for size in bits of port,
+                "default_connection": numerical field describing connection of field or "string for bus signal connection"
+            }, ...
+        ],
+
+        "interrupts":[ 
+            {
+                "name": "string field for interrupt port name",
+                "size": numerical field for size in bits of port,
+                "default_connection": numerical field describing connection of field or "string for bus signal connection"
+            }
+        ] 
+
+    }, ...
+]

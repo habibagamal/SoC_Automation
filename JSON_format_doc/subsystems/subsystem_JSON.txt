@@ -1,0 +1,38 @@
+{
+  "id": unique numeric subsystem id with respect to all subsystems,
+  
+  "design": "string for subsystem design name",
+  
+  "license": numerical license number,
+  
+  "version": "string version",
+  
+  "release_date": {
+        "day": day (numeric),
+        "month": month (numeric),
+        "year": year (numeric)
+  },
+  
+  "designer": {
+        "name": "Designer Name",
+        "email": "designer email"
+  },
+ 
+  "bus_type": number repsenting type of bus (0 = AHB, 1 = APB),
+  
+  "subpage_bits": number of bits for the subpage field (must be multiple of 4),
+
+  "slaves":[
+        {
+            "type": slave type as appears in IPs.json,
+            "subpage": "hexadecimal value of subpage of slave address",
+            "cfg":{}
+        },
+        {
+            "type": slave type as appears in IPs.json,
+            "subpage": "hexadecimal value of subpage of slave address", 
+            "cfg":{}
+        }
+   ]
+  
+}

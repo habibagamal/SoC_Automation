@@ -1,0 +1,96 @@
+[
+  {
+    "name": "string field containing slave name",
+    
+    "type": numerical field containing a unique slave ID (start from 0, and increment by 1 for each IP entry),
+    
+    "module_type": "string field describing whether IP is "soft" or "hard"",
+
+    "interface_type": "string field describing whether the slave id "GEN" so needs a wrapper, "AHB" or "APB"",
+    
+    "description": "string field containing module description",
+    
+    "Author":{
+          "name":"Designer Name",
+          "email":"designer email"
+     },
+    
+    "files":[
+        "filename1",
+        "filename2", ...
+    ],
+     
+     "regs": [
+          {
+              "name": "string containing internal register name",
+              "port": "string containing internal register port name",
+              "description": "string containing internal register description",
+              "offset": numerical field describing byte offset of register,
+              "size": numerical field describing register size in bits,
+              "access": numerical field respresnting access type (1 means master read, 0 means master can read and write), 
+              "initial_value" : numerical field representing initial register value
+          }, ...
+    ],
+    
+    "externals": [
+          {
+              "name": "string containing external name",
+              "port": "string containing external port name",
+              "description": "string containing external description",
+              "size": numerical field containing size in bits of external,
+              "input": numerical field 1 means input and 0 means output 
+          }, ...
+    ], 
+
+
+    "bus_clock": {
+      "name": "string field containing port name of IP's clock"
+    }, 
+
+    "bus_reset": {
+      "name": "string field containing port name of IP's reset",
+      "trig_level": numerical field 1 means reset active high and 0 means reset active low
+    }, 
+
+    connected_to": [
+        {
+          "name": "string field containing module name connected to the IP extenals",
+          "files":[
+            "filename needed by module connected to the IP externals", ...
+          ],
+
+          "ports":[
+            {
+              "name":"port name of module connected to the IP externals",
+              "conn":"IP external port name"
+            }, ...
+          ], 
+
+          "bus_clock": {
+            "name": "string field containing port name of the clock of the module connected to the IP extenals"
+          }, 
+
+          "bus_reset": {
+                "name": "string field containing port name of the reset of the module connected to the IP extenals",
+                "trig_level": numerical field 1 means reset active high and 0 means reset active low
+            },
+
+            "required_lines": [
+                {
+                    "signals":
+                    [
+                        "IP's signal name containing in field "line"", ...
+                    ],
+                    "line": "line to add when instantiating the module connected to the IP extenals"
+                }
+            ],
+        }, ...
+    ], 
+
+    "busInterface": (only need this field for bus specific IPs with interface_type = "AHB" or "APB")
+    {
+      "name of IP's bus signal": "name of connection", ...
+    },
+
+  }, ...
+]

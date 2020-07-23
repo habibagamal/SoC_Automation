@@ -1,0 +1,82 @@
+{
+    "design": "string field for design name",
+    
+    "license": license number,
+    
+    "version": "string field for version",
+    
+    "release_date": {
+            "day": day (numeric),
+            "month": month (numeric),
+            "year": year (numeric)
+    },
+    
+    "designer": {
+            "name": "string for designer name",
+            "email": "string for designer email"
+    },
+
+    "masters_type": numeric field (1: real, 0: dummy),
+    
+    "masters":[
+            {
+                "id": "string master id",
+                "cfg": {
+                    "irqs": numeric (number of IRQ lines),
+                    "mul": numeric
+                }, 
+                "interfaces": [
+                    array of master interfaces' ids
+                ],
+                "bus_interface":
+                [
+                    {
+                        "master_port": "string for bus master port", 
+                        "bus_connection": "can be a string for bus signal name" or null if not connected or numeric for wire assignment,
+                        "size": can be numeric for the size in bits or a string "address_size" for address line"
+                    }
+                ]
+            }, ...
+    ],
+    
+    "testbench": (this field is only relevant for soc's with real master)
+	{
+		"hex_file": "string for name of hex file",
+		"load_into": "string for flash instaniation name with respect to the testbench",
+		"ticks": numerical field for the number os ticks,
+		"vcd": "string field for the name of the vcd file"
+    },
+
+    "address_space": numerical fiels for address size (must be a power of 2),
+    
+    "page_bits": number of bits for the page field (must be multiple of 4),
+    
+    "buses":[
+        {
+              "id": unique numeric bus id with respect to all buses,
+
+              "type": number repsenting type of bus(0 = AHB, 1 = APB),  
+
+              "starting_page": "hexadecimal value of starting page for the bus",
+
+              "number_of_pages": number of pages used by the bus,
+
+              "masters": [array of master id's connected to bus],
+
+              "slaves":[
+                    {
+                        "type": numerical field for slave type as it appears in IPs.json,
+                        "page": "string for hexadecimal value of page of slave address",
+                        "cfg":{}, 
+                        "connected_to": optional numerical field to specify index of module connected to the slave's externals from IPs.json "connected_to" field
+                    }, ...
+              ],
+              "subsystems": [
+                    {
+                        "id": unique numeric subsystem id with respect to all subsystems,
+                        "page": "string hexadecimal value of page of sybsystem address"
+                    }, ...
+              ]
+        }, ...
+    ] 
+}
