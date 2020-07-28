@@ -1,8 +1,8 @@
-# System on Chip (SoC) Automation
+# SoCGen
 
-This program automates SoC design. It expect json input and it outputs verilog files for the SoC and its testbench. 
-Currently it supports AMBA AHB for the high-speed (main) bus and APB for the low speed peripherals bus. 
-We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to produce the final GDS2. 
+A truly no man in the loop. This program automates SoC design through taking JSON input and generating verilog HDL for the SoC. 
+We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to generate the final GDS2. 
+Currently we supports AMBA AHB for the high-speed (main) bus and APB for the low speed peripherals bus. 
 
 ## Getting Started
 
@@ -21,13 +21,6 @@ node ./src/sys_gen.js -soc <soc.json> -mastersLib <masters_lib.json> -IPlib <ip_
 - Omit any fields you don't need in the above command.
 - If there are no subsystems or real masters, you can ommit "-subsystem <subsystem.json>" or "-mastersLib <masters_lib.json>", respectively, from the command.
 
-## Memory Address Sketch
-#### For AHB
-![](Images/AHB.png)
---------------------------
-#### For APB
-![](Images/APB.png)
-
 ## Expected input
 For instructions on how to write the JSON file for: 
 - the masters library: [check this](JSON_format_doc/masters)
@@ -36,15 +29,22 @@ For instructions on how to write the JSON file for:
 - the subsyetem: [check this](JSON_format_doc/subsystems)
 
 ## Directory structure
-- Examples: contains IPs library, masters library and soc examples
-- IPs: contains verilog files for open-source IPs
-- Images: contains images of memory address structures
-- JSON_format_doc: contains documentation for JSON format
-- masters: contains masters verilog files
-- src: contains source code
+- [systems](./systems): contains soc examples
+- [IPs](./IPs): contains JSON for IPs library and verilog files for open-source IPs
+- [masters](./masters): contains JSON for masters library and master-related files
+- [src](./src): contains source code
+- [JSON_format_doc](./JSON_format_doc): contains documentation for JSON format
+- [Images](./Images): contains images used in README
+
+## Memory Address Sketch
+#### For AHB
+![](Images/AHB.png)
+--------------------------
+#### For APB
+![](Images/APB.png)
 
 ## Currently supported features
-- Having multiple dummy masters<br>
+- Having multiple masters (tested on dummy masters)<br>
 ![](Images/multi_masters.jpg)
 - Having multiple buses<br>
 ![](Images/multi_buses.jpg)
@@ -66,6 +66,10 @@ Check this [poster](https://drive.google.com/file/d/1GBd_jf6H-ud2rCmiS8y-bdfOldH
 
 ## Used Projects
 - Arbiter taken from [here](https://github.com/adki/gen_amba)
+
+## To-do 
+- Datasheet generation
+- Hardening using openLane
 
 ## Authors
 * **Amr Gouhar** [agorararmard](https://github.com/agorararmard)
