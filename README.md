@@ -21,13 +21,6 @@ node ./src/sys_gen.js -soc <soc.json> -mastersLib <masters_lib.json> -IPlib <ip_
 - Omit any fields you don't need in the above command.
 - If there are no subsystems or real masters, you can ommit "-subsystem <subsystem.json>" or "-mastersLib <masters_lib.json>", respectively, from the command.
 
-## Memory Address Sketch
-#### For AHB
-![](Images/AHB.png)
---------------------------
-#### For APB
-![](Images/APB.png)
-
 ## Expected input
 For instructions on how to write the JSON file for: 
 - the masters library: [check this](JSON_format_doc/masters)
@@ -36,12 +29,19 @@ For instructions on how to write the JSON file for:
 - the subsyetem: [check this](JSON_format_doc/subsystems)
 
 ## Directory structure
-- Examples: contains IPs library, masters library and soc examples
-- IPs: contains verilog files for open-source IPs
-- Images: contains images of memory address structures
-- JSON_format_doc: contains documentation for JSON format
-- masters: contains masters verilog files
-- src: contains source code
+- [systems](./systems): contains soc examples
+- [IPs](./IPs): contains JSON for IPs library and verilog files for open-source IPs
+- [masters](./masters): contains JSON for masters library and master-related files
+- [src](./src): contains source code
+- [JSON_format_doc](./JSON_format_doc): contains documentation for JSON format
+- [Images](./Images): contains images used in README
+
+## Memory Address Sketch
+#### For AHB
+![](Images/AHB.png)
+--------------------------
+#### For APB
+![](Images/APB.png)
 
 ## Currently supported features
 - Having multiple masters (tested on dummy masters)<br>
