@@ -3,3 +3,4 @@
 !masters/**/*.v
 **/*.lst
 .DS_Store
+compile.sh
