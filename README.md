@@ -1,8 +1,8 @@
-# System on Chip (SoC) Automation
+# SoCGen
 
-This program automates SoC design. It expect json input and it outputs verilog files for the SoC and its testbench. 
+A truly no man in the loop. This program automates SoC design through taking JSON input and generating verilog HDL for the SoC. 
+We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to generate the final GDS2. 
 Currently it supports AMBA AHB for the high-speed (main) bus and APB for the low speed peripherals bus. 
-We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to produce the final GDS2. 
 
 ## Getting Started
 
@@ -44,7 +44,7 @@ For instructions on how to write the JSON file for:
 - src: contains source code
 
 ## Currently supported features
-- Having multiple dummy masters<br>
+- Having multiple masters (tested on dummy masters)<br>
 ![](Images/multi_masters.jpg)
 - Having multiple buses<br>
 ![](Images/multi_buses.jpg)
@@ -66,6 +66,10 @@ Check this [poster](https://drive.google.com/file/d/1GBd_jf6H-ud2rCmiS8y-bdfOldH
 
 ## Used Projects
 - Arbiter taken from [here](https://github.com/adki/gen_amba)
+
+## To-do 
+- Datasheet generation
+- Hardening using openLane
 
 ## Authors
 * **Amr Gouhar** [agorararmard](https://github.com/agorararmard)
