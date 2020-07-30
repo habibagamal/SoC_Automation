@@ -4,3 +4,6 @@
 **/*.lst
 .DS_Store
 compile.sh
+**/*.hex
+**/*.vvp
+**/*.vcd
