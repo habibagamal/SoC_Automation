@@ -1,8 +1,9 @@
 # SoCGen
 
-A truly no man in the loop. This program automates SoC design through taking JSON input and generating verilog HDL for the SoC. 
-We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to generate the final GDS2. 
-Currently we supports AMBA AHB for the high-speed (main) bus and APB for the low speed peripherals bus. 
+A truly no man in the loop.<br><br> 
+This program automates SoC design through taking JSON input and generating verilog HDL for the SoC. 
+We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to generate the final GDS2.<br>
+Currently we support AMBA AHB for the high-speed (main) bus and APB for the low speed peripherals bus. 
 
 ## Getting Started
 
