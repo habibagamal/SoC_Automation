@@ -18,6 +18,7 @@
         {
             "type": 6,
             "description": "I2C Master 0",
+            "connected_to": 0,
             "cfg":{}
         },
         {
@@ -33,12 +34,14 @@
         {
             "type": 7,
             "description": "SPI Master 0",
+            "connected_to": 0,
             "cfg":{}
         },
         
         {
             "type": 0,
             "description": "PWM 0",
+            "connected_to": 0,
             "cfg":{}
         },
         {

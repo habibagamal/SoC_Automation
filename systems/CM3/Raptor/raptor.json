@@ -57,7 +57,15 @@
 			    {
 					"type": 3,
 					"description": "GPIO",
-		            "page": "48", 
+					"page": "48", 
+					"connected_to": 0,
+		            "cfg":{
+					}
+				},
+			    {
+					"type": 9,
+					"description": "debug register",
+		            "page": "77", 
 		            "cfg":{
 					}
 			    }

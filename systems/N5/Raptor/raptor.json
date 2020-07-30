@@ -27,7 +27,7 @@
 	{
 		"hex_file": "main.hex",
 		"load_into": "uut.flash.I0.memory",
-		"ticks": 100000000,
+		"ticks": 100000,
 		"vcd": "real_dump.vcd"
 	},
 	"buses":[
@@ -57,11 +57,11 @@
 			    {
 					"type": 3,
 					"description": "GPIO",
-		            "page": "48", 
+					"page": "48", 
+					"connected_to": 0,
 		            "cfg":{
-					},
-					"connected_to": 0
-			    },
+					}
+				},
 			    {
 					"type": 9,
 					"description": "debug register",

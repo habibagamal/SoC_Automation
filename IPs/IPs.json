@@ -56,11 +56,11 @@
         "files":[
           "PWM/VIP/PWM_VIP.v"
         ],
-        "placement": "tesbench",
+        "placement": "testbench",
         "ports":[
           {
             "name":"pwm",
-            "conn":"pwm"
+            "conn":"PAD_pwm"
           }, 
           {
             "name": "db_reg",
@@ -71,6 +71,22 @@
           "name": "HRESETn",
           "trig_level": 0
         }
+      }
+    ],
+    "IOs":[
+      {
+        "name": "do",
+        "ports":[
+          {
+            "name": "out",
+            "conn": "pwm"
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_pwm",
+            "type": "PAD" 
+          }
+        ]
       }
     ],
     "externals": [
@@ -373,11 +389,43 @@
         "files":[
           "GPIO/VIP/GPIO_VIP.v"
         ],
-        "placement": "tesbench",
+        "placement": "testbench",
         "ports":[
           {
             "name":"GPIOOUT",
-            "conn":"GPIOOUT"
+            "conn":"PAD_GPIO"
+          }
+        ]
+      }
+    ],
+    "IOs":[
+      {
+        "name": "dio",
+        "ports":[
+          {
+            "name": "in",
+            "conn": "GPIOIN"
+          },
+          {
+            "name": "out",
+            "conn": "GPIOOUT"
+          },
+          {
+            "name": "en",
+            "conn": "GPIOOEN"
+          },
+          {
+            "name": "PU",
+            "conn": "GPIOPU"
+          },
+          {
+            "name": "PD",
+            "conn": "GPIOPD"
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_GPIO",
+            "type": "PAD" 
           }
         ]
       }
@@ -525,34 +573,84 @@
         "files":[
           "flash/SST26WF080B.v"
         ],
-        "required_lines": [
-          {
-            "signals":[
-              "fdoe",
-              "fdo",
-              "fdi"
-            ],
-            "line": "wire [3:0] fdio = fdoe ? fdo : 4'bzzzz; assign fdi = fdio;"
-          }
-        ],
         "ports":[
           {
             "name":"SCK",
-            "conn":"fsclk"
+            "conn":"PAD_fsclk"
           }, 
           {
             "name": "SIO",
-            "conn_created": "fdio"
+            "conn": "PAD_fdio"
           }, 
           {
             "name": "CEb",
-            "conn":"fcen"
+            "conn":"PAD_fcen"
+          }
+        ]
+      }
+    ],
+    "IOs":[
+      {
+        "name": "dio",
+        "ports":[
+          {
+            "name": "in",
+            "conn": "fdi"
+          },
+          {
+            "name": "out",
+            "conn": "fdo"
+          },
+          {
+            "name": "en",
+            "conn": "fdoe"
+          }, 
+          {
+            "name": "PU",
+            "conn": 1
+          },
+          {
+            "name": "PD",
+            "conn": 0
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_fdio",
+            "type": "PAD"  
+          }
+        ]
+      },
+      {
+        "name": "do",
+        "ports": [
+          {
+            "name": "out",
+            "conn": "fsclk"
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_fsclk",
+            "type": "PAD"  
+          }
+        ]
+      },
+      {
+        "name": "do",
+        "ports": [
+          {
+            "name": "out",
+            "conn": "fcen"
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_fcen",
+            "type": "PAD"  
           }
         ]
       }
     ],
     "externals": [
-        {
+      {
         "name": "fdi",
         "port": "fdi",
         "description": "fdi",
@@ -581,8 +679,8 @@
         "input": 0
       }, 
       {
-          "name": "fcen",
-          "port":"fcen",
+        "name": "fcen",
+        "port":"fcen",
         "description": "fcen",
         "size": 1,
         "input": 0
@@ -624,6 +722,107 @@
       "i2c/i2c.v",
       "i2c/apb2i2c.v"
     ],
+    "connected_to": [
+      {
+        "name": "i2c_slave_vip",
+        "files":[
+          "i2c/VIPs/i2c_slave_vip.v"
+        ],
+        "placement": "testbench",
+        "required_lines": [
+          {
+            "line": "wire [15:0]i2c_data; always @ (i2c_data) if (i2c_data == 16'd69) begin $display(\"I2C test passed\"); $finish; end"
+          }
+        ],
+        "ports":[
+          {
+            "name":"scl",
+            "conn":"PAD_i2c_cl"
+          }, 
+          {
+            "name": "sda",
+            "conn": "PAD_i2c_da"
+          },
+          {
+            "name": "i2c_data",
+            "conn_created": "i2c_data"
+          }
+        ],
+        "bus_clock": {
+          "name": "clk"
+        },
+        "bus_reset": {
+          "name": "rst",
+          "trig_level": 1
+        }
+      }
+    ],
+    "IOs":[
+      {
+        "name": "dio",
+        "ports":[
+          {
+            "name": "in",
+            "conn": "scl_i"
+          },
+          {
+            "name": "out",
+            "conn": "scl_o"
+          },
+          {
+            "name": "en",
+            "conn": "scl_oen_o",
+            "inverted": 1
+          }, 
+          {
+            "name": "PU",
+            "conn": 1,
+            "type": "PU"
+          },
+          {
+            "name": "PD",
+            "conn": 0
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_i2c_cl",
+            "type": "PAD"  
+          }
+        ]
+      }, 
+      {
+        "name": "dio",
+        "ports":[
+          {
+            "name": "in",
+            "conn": "sda_i"
+          },
+          {
+            "name": "out",
+            "conn": "sda_o"
+          },
+          {
+            "name": "en",
+            "conn": "sda_oen_o",
+            "inverted": 1
+          }, 
+          {
+            "name": "PU",
+            "conn": 1,
+            "type": "PU"
+          },
+          {
+            "name": "PD",
+            "conn": 0
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_i2c_da",
+            "type": "PAD"  
+          }
+        ]
+      }
+    ] ,
     "externals": [
         {
         "name": "scl_i",
@@ -640,8 +839,8 @@
         "input": 0
       }, 
       {
-          "name": "scl_oen_o",
-          "port":"scl_oen_o",
+        "name": "scl_oen_o",
+        "port":"scl_oen_o",
         "description": "SCL-line output enable (active low)",
         "size": 1,
         "input": 0
@@ -668,7 +867,6 @@
         "input": 0
       }
   ],
-  
   "busInterface":
     {
       "PSEL":"PSEL",
@@ -702,6 +900,72 @@
       "SPI/apb2spi.v",
       "SPI/spi_master.v"
     ],
+    "IOs":[
+      {
+        "name": "di",
+        "ports":[
+          {
+            "name": "in",
+            "conn": "MSI"
+          }, 
+          {
+            "name": "PU",
+            "conn": 1
+          },
+          {
+            "name": "PD",
+            "conn": 0
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_MSI",
+            "type": "PAD" 
+          }
+        ]
+      }, 
+      {
+        "name": "do",
+        "ports":[
+          {
+            "name": "out",
+            "conn": "MSO"
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_MSO",
+            "type": "PAD" 
+          }
+        ]
+      }, 
+      {
+        "name": "do",
+        "ports":[
+          {
+            "name": "out",
+            "conn": "SSn"
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_SSn",
+            "type": "PAD" 
+          }
+        ]
+      }, 
+      {
+        "name": "do",
+        "ports":[
+          {
+            "name": "out",
+            "conn": "SCLK"
+          },
+          {
+            "name": "PAD",
+            "conn": "PAD_SCLK",
+            "type": "PAD" 
+          }
+        ]
+      }
+    ] ,
     "externals": [
           {
               "name": "MSI",
@@ -738,7 +1002,7 @@
           "files":[
             "SPI/VIPs/23LC512.v"
           ],
-          "placement": "tesbench",
+          "placement": "testbench",
           "required_lines": [
             {
               "line": "wire spi_flash_hold; assign spi_flash_hold = 1'b1;"
@@ -747,19 +1011,19 @@
           "ports":[
             {
               "name":"SO_SIO1",
-              "conn":"MSI"
+              "conn":"PAD_MSI"
             }, 
             {
               "name": "SI_SIO0",
-              "conn": "MSO"
+              "conn": "PAD_MSO"
             }, 
             {
               "name": "CS_N",
-              "conn":"SSn"
+              "conn":"PAD_SSn"
             }, 
             {
               "name": "SCK",
-              "conn":"SCLK"
+              "conn":"PAD_SCLK"
             },
             {
               "name": "HOLD_N_SIO3",
