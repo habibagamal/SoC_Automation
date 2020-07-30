@@ -13,13 +13,20 @@ module PWM_VIP(
 		end
 	end
 
-    always @ (db_reg) begin 
-        if (db_reg == 4'ha) begin
-            if (counter > 2) begin
-                $display("PWM Test Passed");	
-                $finish();
-            end	
-        end
+    always @ (counter) begin
+        if (counter > 2) begin
+            $display("PWM Test Passed");	
+            $finish();
+        end	
     end
+
+    // always @ (db_reg) begin 
+    //     if (db_reg == 4'ha) begin
+    //         if (counter > 2) begin
+    //             $display("PWM Test Passed");	
+    //             $finish();
+    //         end	
+    //     end
+    // end
 
 endmodule

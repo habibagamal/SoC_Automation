@@ -1,0 +1,82 @@
+[
+    {
+        "name": "dio",
+        "files":[
+            "dio.v"
+        ],
+        "ports":[
+            {
+                "name": "in",
+                "access": 1
+            },
+            {
+                "name": "out",
+                "access": 0
+            },
+            {
+                "name": "en",
+                "access": 1
+            },
+            {
+                "name": "PU",
+                "access": 1
+            },
+            {
+                "name": "PD",
+                "access": 1
+            },
+            {
+                "name": "PAD",
+                "access": 2
+            }
+        ]
+    },
+    {
+        "name": "di",
+        "files": [
+            "di.v"
+        ],
+        "ports":[
+            {
+                "name": "in",
+                "access": 1
+            },
+            {
+                "name": "PU",
+                "access": 1
+            },
+            {
+                "name": "PD",
+                "access": 1
+            },
+            {
+                "name": "PAD",
+                "access": 1
+            }
+        ]
+    },
+    {
+        "name": "do",
+        "files":["do.v"] ,
+        "ports": [
+            {
+                "name": "out",
+                "access": 0
+            },
+            {
+                "name": "PAD",
+                "access": 0
+            }
+        ]
+    },
+    {
+        "name": "ana",
+        "files": ["ana.v"],
+        "ports": [
+            {
+                "name": "PAD",
+                "access": 2
+            }
+        ]
+    }
+]

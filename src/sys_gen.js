@@ -33,13 +33,15 @@ var topModuleHeader = ``
 
 var moduleInstantiation =``
 
-var topModuleDeclarations =``
+var topModules =``
 
 var topModuleContent=``
 
 var testbench = ``
 var testbench_header = ``
 var testbench_inst = ``
+var testbenchs = ``
+var testbenchContent = ``
 
 //try{
 
@@ -195,7 +197,7 @@ topModuleContent+=`\n\n\nendmodule`
 
 // form_testbench()
 
-fs.writeFile(Directory+"soc_m"+soc.masters.length+"_b"+soc.buses.length+".v", topModuleHeader+topModuleDeclarations+topModuleContent, (err) => {
+fs.writeFile(Directory+"soc_m"+soc.masters.length+"_b"+soc.buses.length+".v", topModuleHeader+topModules+topModuleContent, (err) => {
     if (err)
         throw err; 
   })
@@ -304,34 +306,51 @@ function buses_gen(){
                 testbench_inst += `\n\t\t.db_reg_Sys${soc.buses[bus_index].id}(db_reg_Sys${soc.buses[bus_index].id}),`
             }
 
+            if (IPs_map.get(slaves[slave_index].type).connected_to != undefined){
+                if (IPs_map.get(slaves[slave_index].type).connected_to[slaves[slave_index].connected_to].placement == "soc_core"){
+                    for (var ext_typex in IPs_map.get(slaves[slave_index].type).externals){
+                        var external = IPs_map.get(slaves[slave_index].type).externals[ext_typex]
+                        module_declarations += `\n\t`+`wire [${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                    }
+                    continue;
+                }
+            }
 
             if(IPs_map.get(slaves[slave_index].type).module_type != "hard"){
                 for (var ext_typex in IPs_map.get(slaves[slave_index].type).externals){
                     var external = IPs_map.get(slaves[slave_index].type).externals[ext_typex]
                     module_header += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
-                    if (slaves[slave_index].connected_to == undefined){
-                        topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
-                        testbench_header += `;\n\t`+(external.input?`reg `:`wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
-                        testbench_inst += `\n\t\t.${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}(${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}),`
+                    
+                    let condition = slaves[slave_index].connected_to == undefined
+                    if (IPs_map.get(slaves[slave_index].type).connected_to != undefined && slaves[slave_index].connected_to != undefined)
+                        condition |= IPs_map.get(slaves[slave_index].type).connected_to[slaves[slave_index].connected_to].placement == "testbench"
+                    if (condition){
+                        // topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
+                        // testbench_header += `;\n\t`+(external.input?`wire `:`wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
+                        // testbench_inst += `\n\t\t.PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}(PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}),`
                     }
                     else
-                        topModuleDeclarations += `\n\twire ` + `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                        topModules += `\n\twire ` + `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index};`
                     
                         moduleInstantiation+= `,\n\t.${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}(${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index})`
                 }
             }else{
-                //Declaring system's Hard Modules' signals and extracting them outside of the main soc module
+                //Declaring system'declarations Hard Modules' signals and extracting them outside of the main soc module
                 topModuleContent+= digital_modules_instantiation_AHB(IPs_map,slaves, slave_index,soc.buses[bus_index].id)
                     
                 for (var ext_typex in IPs_map.get(slaves[slave_index].type).externals){
                     var external = IPs_map.get(slaves[slave_index].type).externals[ext_typex]
-                    if (slaves[slave_index].connected_to == undefined){
-                        topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
-                        testbench_header += `;\n\t`+(external.input?`reg `:`wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
-                        testbench_inst += `\n\t\t.${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}(${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}),`
+                    
+                    let condition = slaves[slave_index].connected_to == undefined
+                    if (IPs_map.get(slaves[slave_index].type).connected_to != undefined && slaves[slave_index].connected_to != undefined)
+                        condition |= IPs_map.get(slaves[slave_index].type).connected_to[slaves[slave_index].connected_to].placement == "testbench"
+                    if (condition){
+                        // topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
+                        // testbench_header += `;\n\t`+(external.input?`wire `:`wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
+                        // testbench_inst += `\n\t\t.PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}(PAD_${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index}),`
                     }
                     else
-                        topModuleDeclarations += `\n\twire ` + `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                        topModules += `\n\twire ` + `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_S${slave_index};`
                 }   
                 if(IPs_map.get(slaves[slave_index].type).interface_type == "GEN"){
                     if (IPs_map.get(slaves[slave_index].type).regs != undefined){
@@ -343,17 +362,17 @@ function buses_gen(){
                                     var regFSize= parseInt(utils.getSize(IPs_map.get(slaves[slave_index].type),slaves[slave_index],reg.fields[i]))
                                     module_header += `,\n\t`+(reg.access?`input`:`output`) +`[${regFSize - 1}: 0] ${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_S${slave_index}`
                                     moduleInstantiation+= `,\n\t.${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_S${slave_index}(${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_S${slave_index})`
-                                    topModuleDeclarations+=`\n\twire [${regFSize - 1}: 0] ${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                                    topModules+=`\n\twire [${regFSize - 1}: 0] ${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_S${slave_index};`
                                 }
                             } else {
                                 module_header += `,\n\t`+(reg.access?`input`:`output`) +`[${size - 1}: 0] ${reg.port}_Sys${soc.buses[bus_index].id}_S${slave_index}`
                                 moduleInstantiation+=`,\n\t.${reg.port}_Sys${soc.buses[bus_index].id}_S${slave_index}(${reg.port}_Sys${soc.buses[bus_index].id}_S${slave_index})`
-                                topModuleDeclarations += `\n\twire [${size - 1}: 0] ${reg.port}_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                                topModules += `\n\twire [${size - 1}: 0] ${reg.port}_Sys${soc.buses[bus_index].id}_S${slave_index};`
                             }
                             if(reg.access_pulse != undefined){
                                 module_header += `,\n\t output ${reg.access_pulse}_Sys${soc.buses[bus_index].id}_S${slave_index}`
                                 moduleInstantiation+=`,\n\t.${reg.access_pulse}_Sys${soc.buses[bus_index].id}_S${slave_index}(${reg.access_pulse}_Sys${soc.buses[bus_index].id}_S${slave_index})`
-                                topModuleDeclarations += `\n\twire ${reg.access_pulse}_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                                topModules += `\n\twire ${reg.access_pulse}_Sys${soc.buses[bus_index].id}_S${slave_index};`
                             }
                         } 
                     }          
@@ -369,7 +388,7 @@ function buses_gen(){
                         output HREADY_Sys${soc.buses[bus_index].id},
                         output [1 : 0] HRESP_Sys${soc.buses[bus_index].id}`
 
-                        topModuleDeclarations+=`\n\t\twire HCLK_Sys${soc.buses[bus_index].id};
+                        topModules+=`\n\t\twire HCLK_Sys${soc.buses[bus_index].id};
                         wire HRESETn_Sys${soc.buses[bus_index].id};
                         wire [${soc.address_space-1}:0] HADDR_Sys${soc.buses[bus_index].id};
                         wire HWRITE_Sys${soc.buses[bus_index].id};
@@ -403,11 +422,11 @@ function buses_gen(){
                     var tmpSlaveInterface = IPs_map.get(slaves[slave_index].type).busInterface
     
                     if(tmpSlaveInterface.HSEL != null)
-                        topModuleDeclarations += `\n\t\twire HSEL_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                        topModules += `\n\t\twire HSEL_Sys${soc.buses[bus_index].id}_S${slave_index};`
                     if(tmpSlaveInterface.HRDATA != null)
-                        topModuleDeclarations += `\n\t\twire [31 : 0] HRDATA_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                        topModules += `\n\t\twire [31 : 0] HRDATA_Sys${soc.buses[bus_index].id}_S${slave_index};`
                     if(tmpSlaveInterface.HREADY != null)
-                        topModuleDeclarations += `\n\t\twire HREADY_Sys${soc.buses[bus_index].id}_S${slave_index};`
+                        topModules += `\n\t\twire HREADY_Sys${soc.buses[bus_index].id}_S${slave_index};`
                     
                 }
             }
@@ -430,33 +449,52 @@ function buses_gen(){
                     testbench_header += `;\n\twire [3:0] db_reg_Sys${soc.buses[bus_index].id}`
                     testbench_inst += `\n\t\t.db_reg_Sys${soc.buses[bus_index].id}(db_reg_Sys${soc.buses[bus_index].id}),`
                 }
+
+                if (IPs_map.get(subSystem.slaves[slave_index].type).connected_to != undefined){
+                    if (IPs_map.get(subSystem.slaves[slave_index].type).connected_to[subSystem.slaves[slave_index].connected_to].placement == "soc_core"){
+                        continue;
+                    }
+                }
+
+                if (IPs_map.get(subSystem.slaves[slave_index].type).connected_to != undefined){
+                    if (IPs_map.get(subSystem.slaves[slave_index].type).connected_to[subSystem.slaves[slave_index].connected_to].placement == "soc_core"){
+                        continue;
+                    }
+                }
             
             if(IPs_map.get(subSystem.slaves[slave_index].type).module_type != "hard"){
                 for (var ext_typex in IPs_map.get(subSystem.slaves[slave_index].type).externals){
                     var external = IPs_map.get(subSystem.slaves[slave_index].type).externals[ext_typex]
                     module_header += `,\n\t\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
-                    if (subSystem.slaves[slave_index].connected_to == undefined){
-                        topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
-                        testbench_header += `;\n\t`+(external.input?`reg `:`wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
-                        testbench_inst += `\n\t\t.${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}),`
+                    
+                    let condition = subSystem.slaves[slave_index].connected_to == undefined
+                    if (IPs_map.get(subSystem.slaves[slave_index].type).connected_to != undefined && subSystem.slaves[slave_index].connected_to != undefined)
+                        condition |= IPs_map.get(subSystem.slaves[slave_index].type).connected_to[subSystem.slaves[slave_index].connected_to].placement == "testbench"
+                    if (condition){                    
+                        // topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
+                        // testbench_header += `;\n\t`+(external.input?`wire `:`wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
+                        // testbench_inst += `\n\t\t.PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}),`
                     }
                     else 
-                        topModuleDeclarations += `\n\t\twire `+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                        topModules += `\n\t\twire `+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                     moduleInstantiation +=  `,\n\t\t.${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index})`
                 }
             }else{
                 topModuleContent+= digital_modules_instantiation_APB(subSystem.slaves, slave_index, IPs_map, soc.buses[bus_index].id, subSystem_index)
                 for (var ext_typex in IPs_map.get(subSystem.slaves[slave_index].type).externals){
                     var external = IPs_map.get(subSystem.slaves[slave_index].type).externals[ext_typex]
-                    if (subSystem.slaves[slave_index].connected_to == undefined){
-                        topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
-                        testbench_header += `;\n\t`+(external.input?`reg `:`wire ` )+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
-                        testbench_inst += `\n\t\t.${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}),`
+                    let condition = subSystem.slaves[slave_index].connected_to == undefined
+                    if (IPs_map.get(subSystem.slaves[slave_index].type).connected_to != undefined && subSystem.slaves[slave_index].connected_to != undefined)
+                        condition |= IPs_map.get(subSystem.slaves[slave_index].type).connected_to[subSystem.slaves[slave_index].connected_to].placement == "testbench"
+                    if (condition){     
+                        // topModuleHeader += `,\n\t`+(external.input?`input wire `:`output wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
+                        // testbench_header += `;\n\t`+(external.input?`wire `:`wire ` )+ `[${external.size - 1}: 0] PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
+                        // testbench_inst += `\n\t\t.PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(PAD_${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}),`
                     }
                     else 
-                        topModuleDeclarations += `\n\t\twire `+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                        topModules += `\n\t\twire `+ `[${external.size - 1}: 0] ${external.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                 }
-                //Declaring subsystem's Hard Modules' signals and extracting them outside of the main soc module
+                //Declaring subsystem'declarations Hard Modules' signals and extracting them outside of the main soc module
                 if(IPs_map.get(subSystem.slaves[slave_index].type).interface_type == "GEN"){
                     if (IPs_map.get(slaves[slave_index].type).regs != undefined){
                         for (var reg_typex in IPs_map.get(subSystem.slaves[slave_index].type).regs){
@@ -466,19 +504,19 @@ function buses_gen(){
                                 for (var i = 0; i < reg.fields.length; i++){
                                     var regFSize = parseInt(utils.getSize(IPs_map.get(subSystem.slaves[slave_index].type),subSystem.slaves[slave_index],reg.fields[i]))
                                     module_header += `,\n\t\t`+(reg.access?`input`:`output`) +`[${regFSize - 1}: 0] ${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
-                                    topModuleDeclarations += `\n\t\twire [${regFSize - 1}: 0] ${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                                    topModules += `\n\t\twire [${regFSize - 1}: 0] ${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                                     moduleInstantiation += `,\n\t\t.${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(${reg.port}_${reg.fields[i].name}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index})`
                                     
                                 }
                             } else {
                                 module_header += `,\n\t\t`+(reg.access?`input`:`output`) +`[${size - 1}: 0] ${reg.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
-                                topModuleDeclarations += `\n\t\twire [${size - 1}: 0] ${reg.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                                topModules += `\n\t\twire [${size - 1}: 0] ${reg.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                                 moduleInstantiation += `,\n\t\t.${reg.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(${reg.port}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index})`
                             }
                             if(reg.access_pulse != undefined){
                                 module_header += `,\n\t output ${reg.access_pulse}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}`
                                 moduleInstantiation+=`,\n\t.${reg.access_pulse}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index}(${reg.access_pulse}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index})`
-                                topModuleDeclarations += `\n\twire ${reg.access_pulse}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                                topModules += `\n\twire ${reg.access_pulse}_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                             }
                         }    
                     }  
@@ -491,7 +529,7 @@ function buses_gen(){
                         output wire [31:0] PWDATA_Sys${soc.buses[bus_index].id}_SS${subSystem_index},
                         output wire PENABLE_Sys${soc.buses[bus_index].id}_SS${subSystem_index}
                     `   
-                        topModuleDeclarations+=`\n\t\twire PCLK_Sys${soc.buses[bus_index].id}_SS${subSystem_index};
+                        topModules+=`\n\t\twire PCLK_Sys${soc.buses[bus_index].id}_SS${subSystem_index};
                     wire PRESETn_Sys${soc.buses[bus_index].id}_SS${subSystem_index};
                     wire [${(soc.address_space)-1}:0] PADDR_Sys${soc.buses[bus_index].id}_SS${subSystem_index};
                     wire PWRITE_Sys${soc.buses[bus_index].id}_SS${subSystem_index};
@@ -522,11 +560,11 @@ function buses_gen(){
                     var tmpSlaveInterface = IPs_map.get(subSystem.slaves[slave_index].type).busInterface
 
                     if(tmpSlaveInterface.PSEL != null)
-                        topModuleDeclarations+= `\n\t\twire PSEL_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                        topModules+= `\n\t\twire PSEL_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                     if(tmpSlaveInterface.PRDATA != null)
-                        topModuleDeclarations+= `\n\t\twire [31:0] PRDATA_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                        topModules+= `\n\t\twire [31:0] PRDATA_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                     if(tmpSlaveInterface.PREADY != null)
-                        topModuleDeclarations+= `\n\t\twire PREADY_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
+                        topModules+= `\n\t\twire PREADY_Sys${soc.buses[bus_index].id}_SS${subSystem_index}_S${slave_index};`
                 }
             }
           }
@@ -538,6 +576,7 @@ function buses_gen(){
 
 
     external_conections(IPs_map)
+    IOsInstantiation(IPs_map)
     if (soc.masters_type == 0){
         var masters_map = new Map(); 
         masters_map_gen(masters_map, IPs_map, subSystems_map, soc.address_space)
@@ -1254,7 +1293,7 @@ function digital_modules_instantiation_APB(slaves, slave_index, IPs_map, busID, 
     if(IPs_map.get(slaves[slave_index].type) != undefined)
     line += `
         //Digital module # ${slave_index}
-        ` + IPs_map.get(slaves[slave_index].type).name + ` S${slave_index} (`
+        ` + IPs_map.get(slaves[slave_index].type).name + ` declarations${slave_index} (`
 
     var IP = IPs_map.get(slaves[slave_index].type)
     
@@ -1270,7 +1309,7 @@ function digital_modules_instantiation_APB(slaves, slave_index, IPs_map, busID, 
         line+=`)`
     }
     
-    line += ` S${slave_index} (`
+    line += ` declarations${slave_index} (`
 
     if (IP.bus_clock != undefined){
         line += `
@@ -1362,7 +1401,7 @@ function form_testbench(){
 \t\t.Input_irq(Input_irq),
 \t\t.Output_DATA(Output_DATA),`
 
-        // top level externals for declaration
+        // top level externals for 
         testbench += testbench_header + ";"
         
         // top level externals for instantiation
@@ -1420,6 +1459,8 @@ function form_testbench(){
 \t\t$readmemh("${soc.testbench.hex_file}", ${soc.testbench.load_into}); 
 \tend`
         }
+        testbench += testbenchs
+        testbench += testbenchContent
 
         testbench += `\n\nendmodule`
         
@@ -1435,9 +1476,17 @@ function external_conections(IPs_map){
         var slaves = soc.buses[bus_index].slaves
         for (var slave_index in slaves){
             if(IPs_map.get(slaves[slave_index].type).connected_to != undefined){
+                console.log(IPs_map.get(slaves[slave_index].type).name)
+                console.log(IPs_map.get(slaves[slave_index].type).connected_to[0].placement)
                 connection = IPs_map.get(slaves[slave_index].type).connected_to;
 
                 if (slaves[slave_index].connected_to != undefined){
+                    if (IPs_map.get(slaves[slave_index].type).connected_to.placement == "soc_core")
+                        continue;
+                    var content = ''
+                    var content_PAD = ``
+                    var declarations = ''
+                    var wires = ''
                     conn_idx = slaves[slave_index].connected_to
                     if (connection[conn_idx] != undefined){
 
@@ -1447,7 +1496,7 @@ function external_conections(IPs_map){
                                 try{   
                                     var module = fs.readFileSync("./IPs/"+file)
                                 }catch(e){
-                                    throw new Error("master file doesn't exist " + filename)
+                                    throw new Error("external file doesn't exist " + filename)
                                 }
         
                                 var n = file.lastIndexOf('/');
@@ -1468,40 +1517,62 @@ function external_conections(IPs_map){
                                     var re = new RegExp(req_line_obj.signals[signal_idx]+ " ");
                                     req_line = req_line.replace( re , req_line_obj.signals[signal_idx] +`_Sys${bus_index}_S${slave_index} `)
                                 }
-                                topModuleDeclarations += "\n\n\t" + req_line
+                                declarations += "\n\n\t" + req_line
                             }
                         }
 
 
                         if (connection[conn_idx].inst_name == undefined)
-                            topModuleContent += `\n\t${connection[conn_idx].name} ${connection[conn_idx].name}_Sys${bus_index}_S${slave_index}(`
+                            content += `\n\t${connection[conn_idx].name} ${connection[conn_idx].name}_Sys${bus_index}_S${slave_index}(`
                         else 
-                            topModuleContent += `\n\t${connection[conn_idx].name} ${connection[conn_idx].inst_name}(`
+                            content += `\n\t${connection[conn_idx].name} ${connection[conn_idx].inst_name}(`
 
                         if(connection[conn_idx].bus_clock != undefined)
-                            topModuleContent += `\n\t.${connection[conn_idx].bus_clock.name}(HCLK),`
+                            content += `\n\t.${connection[conn_idx].bus_clock.name}(HCLK),`
 
                         if(connection[conn_idx].bus_reset != undefined){
-                            topModuleContent += `\n\t.${connection[conn_idx].bus_reset.name}`
+                            content += `\n\t.${connection[conn_idx].bus_reset.name}`
                             if (connection[conn_idx].bus_reset.trig_level == 0)
-                                topModuleContent += `(HRESETn),`
+                                content += `(HRESETn),`
                             else
-                                topModuleContent += `(~HRESETn),`
+                                content += `(~HRESETn),`
                         }
 
+                        content_PAD = content
                         for(port_idx in connection[conn_idx].ports){
                             port = connection[conn_idx].ports[port_idx]
                             if (port.conn != undefined)
-                                if (port.conn == "db_reg")
-                                    topModuleContent += `\n\t.${port.name}(${port.conn}_Sys${bus_index}),`
-                                else 
-                                    topModuleContent += `\n\t.${port.name}(${port.conn}_Sys${bus_index}_S${slave_index}),`
+                                if (port.conn == "db_reg"){
+                                    content += `\n\t.${port.name}(${port.conn}_Sys${bus_index}),`
+                                    content_PAD += `\n\t.${port.name}(${port.conn}_Sys${bus_index}),`
+                                }
+                                else {
+                                    content += `\n\t.${port.name}(${port.conn}_Sys${bus_index}_S${slave_index}),`
+                                    content_PAD += `\n\t.${port.name}(PAD_${port.conn}_Sys${bus_index}_S${slave_index}),`
+                                }
                                 
-                            if (port.conn_created != undefined)
-                                topModuleContent += `\n\t.${port.name}(${port.conn_created}),`
+                            if (port.conn_created != undefined){
+                                content += `\n\t.${port.name}(${port.conn_created}),`
+                                content_PAD += `\n\t.${port.name}(${port.conn_created}),`
+                            }
                         }
-                        topModuleContent = topModuleContent.slice(0, -1);
-                        topModuleContent += `\n\t);`
+                        content = content.slice(0, -1);
+                        content += `\n\t);`
+
+                        content_PAD = content_PAD.slice(0, -1);
+                        content_PAD += `\n\t);`
+                    }
+                    if (connection[conn_idx].placement == "soc"){
+                        topModules += declarations
+                        topModuleContent += content
+                    } 
+                    else if (connection[conn_idx].placement == "testbench"){
+                        testbenchs += declarations
+                        testbenchContent += content
+                    }
+                    else if (connection[conn_idx].placement == "soc_core"){
+                        module_declarations += declarations
+                        module_content += content
                     }
                 }
             }
@@ -1512,6 +1583,11 @@ function external_conections(IPs_map){
             for (var slave_index in subSystems_map.get(subSystems[subSystem_index].id).slaves){
                 slave = subSystems_map.get(subSystems[subSystem_index].id).slaves[slave_index]
                 if(IPs_map.get(slave.type).connected_to != undefined){
+                    // if (IPs_map.get(slave.type).connected_to.placement == "soc_core")
+                    //     continue;
+                    var content = ``
+                    var content_PAD = ``
+                    var declarations = ``
                     connection = IPs_map.get(slave.type).connected_to;
     
                     if (slave.connected_to != undefined){
@@ -1545,45 +1621,226 @@ function external_conections(IPs_map){
                                         var re = new RegExp(req_line_obj.signals[signal_idx]+ " ");
                                         req_line = req_line.replace( re , req_line_obj.signals[signal_idx] +`_Sys${bus_index}_SS${subSystem_index}_S${slave_index} `)
                                     }
-                                    topModuleDeclarations += "\n\n\t" + req_line
+                                    declarations += "\n\n\t" + req_line
                                 }
                             }
     
     
                             if (connection[conn_idx].inst_name == undefined)
-                                topModuleContent += `\n\t${connection[conn_idx].name} ${connection[conn_idx].name}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}(`
+                                content += `\n\t${connection[conn_idx].name} ${connection[conn_idx].name}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}(`
                             else 
-                                topModuleContent += `\n\t${connection[conn_idx].name} ${connection[conn_idx].inst_name}(`
+                                content += `\n\t${connection[conn_idx].name} ${connection[conn_idx].inst_name}(`
     
                             if(connection[conn_idx].bus_clock != undefined)
-                                topModuleContent += `\n\t.${connection[conn_idx].bus_clock.name}(HCLK),`
+                                content += `\n\t.${connection[conn_idx].bus_clock.name}(HCLK),`
     
                             if(connection[conn_idx].bus_reset != undefined){
-                                topModuleContent += `\n\t.${connection[conn_idx].bus_reset.name}`
+                                content += `\n\t.${connection[conn_idx].bus_reset.name}`
                                 if (connection[conn_idx].bus_reset.trig_level == 0)
-                                    topModuleContent += `(HRESETn),`
+                                    content += `(HRESETn),`
                                 else
-                                    topModuleContent += `(~HRESETn),`
+                                    content += `(~HRESETn),`
                             }
-    
+                            
+                            content_PAD = content
                             for(port_idx in connection[conn_idx].ports){
                                 port = connection[conn_idx].ports[port_idx]
 
                                 if (port.conn != undefined)
-                                    if (port.conn == "db_reg")
-                                        topModuleContent += `\n\t.${port.name}(${port.conn}_Sys${bus_index}),`
-                                    else
-                                        topModuleContent += `\n\t.${port.name}(${port.conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
+                                    if (port.conn == "db_reg"){
+                                        content += `\n\t.${port.name}(${port.conn}_Sys${bus_index}),`
+                                        content_PAD += `\n\t.${port.name}(${port.conn}_Sys${bus_index}),`
+                                    }
+                                    else {
+                                        content += `\n\t.${port.name}(${port.conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
+                                        content_PAD += `\n\t.${port.name}(PAD_${port.conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
+                                    }
                                     
-                                if (port.conn_created != undefined)
-                                    topModuleContent += `\n\t.${port.name}(${port.conn_created}),`
+                                if (port.conn_created != undefined){
+                                    content += `\n\t.${port.name}(${port.conn_created}),`
+                                    content_PAD += `\n\t.${port.name}(${port.conn_created}),`
+                                }
                             }
-                            topModuleContent = topModuleContent.slice(0, -1);
-                            topModuleContent += `\n\t);`
+                            content = content.slice(0, -1);
+                            content += `\n\t);`
+
+                            content_PAD = content_PAD.slice(0, -1);
+                            content_PAD += `\n\t);`
                         }
+                    }
+                    if (connection[conn_idx].placement == "soc"){
+                        topModules += declarations
+                        topModuleContent += content
+                    } 
+                    else if (connection[conn_idx].placement == "testbench"){
+                        testbenchs += declarations
+                        testbenchContent += content
+                    } else if (connection[conn_idx].placement == "soc_core"){
+                        module_declarations += declarations
+                        module_content += content
                     }
                 }
             }
         }
     }
 }
+function IOsInstantiation(IPs_map){
+    var IOs_json = fs.readFileSync("./IOs/IOs.json")
+    IOs_arr = JSON.parse(IOs_json)
+    for (j in IOs_arr){
+        let files = IOs_arr[j].files
+        for (i in files){
+            let file = files[i]
+            try{   
+                var module = fs.readFileSync("./IOs/"+file)
+            }catch(e){
+                throw new Error("I/O file doesn't exist "  + files)
+            }
+            var n = file.lastIndexOf('/');
+            var filename = file.substring(n + 1);  
+            fs.writeFile(Directory+filename, module, (err) => {
+                if (err)
+                    throw err; 
+              })
+        }
+    }
+    
+    
+    for (bus_index in soc.buses){
+        var slaves = soc.buses[bus_index].slaves
+        for (var slave_index in slaves){
+            if(IPs_map.get(slaves[slave_index].type).IOs != undefined){
+                for (IO_indx in IPs_map.get(slaves[slave_index].type).IOs){
+                    IO = IPs_map.get(slaves[slave_index].type).IOs[IO_indx]
+                    IP = IPs_map.get(slaves[slave_index].type)
+                    let IO_entry = IOs_arr.find(fruit => fruit.name === IO.name);
+                    let external = IP.externals.find(fruit => fruit.name === IO.ports[0].conn);
+                    if (external == undefined)
+                      continue;
+                    else
+                      console.log("YOO")
+                    size = external.size;
+            
+                    //create PADs
+                    for (i = 0; i < IO.ports.length; i++){
+                        if (isNaN(IO.ports[i].conn) == true){
+                            topModuleContent += `\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index};`
+                            if (IO.ports[i].type == "PAD"){
+                                console.log("hello"+ IO.ports[i].conn)
+                                let IO_PAD = IO_entry.ports.find(fruit => fruit.name === IO.ports[i].name)
+                                let IP_PU = IO.ports.find(fruit => fruit.type === "PU")
+                                if (IO_PAD.access == 1){
+                                    topModuleHeader += `,\n\tinput [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}`
+                                    testbench_header += `;\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}`
+                                    testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}),`
+                                }
+                                else if (IO_PAD.access == 0){
+                                    topModuleHeader += `,\n\toutput[${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}`
+                                    testbench_header += `;\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}`
+                                    testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}),`
+                                } else if (IO_PAD.access == 2){
+                                    topModuleHeader += `,\n\tinout[${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}`
+                                    if (IP_PU != undefined && IP_PU.conn == 1)
+                                        testbench_header += `;\n\ttri1 [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}`    
+                                    else 
+                                        testbench_header += `;\n\ttri [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}`                       
+                                    testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_S${slave_index}),`
+                                }
+                                
+                            }
+                        }
+                    }
+                    for (i = 0; i < size; i++){
+                        // instanitaion
+                        topModuleContent += `\n\t${IO_entry.name} ${IO_entry.name}_Sys${bus_index}_S${slave_index}_IO${IO_indx}_${i}(`
+                        for (j = 0; j < IO.ports.length; j++){
+                            if (isNaN (IO.ports[j].conn) == false)
+                                topModuleContent += ` .${IO.ports[j].name}(1'b${IO.ports[j].conn}),` 
+                            else{
+                                topModuleContent += ` .${IO.ports[j].name}(`
+                                if (IO.ports[j].inverted == 1)
+                                    topModuleContent += `~`
+                                topModuleContent += `${IO.ports[j].conn}_Sys${bus_index}_S${slave_index}`
+                                if (size > 1)
+                                    topModuleContent +=`[${i}]),`
+                                else 
+                                    topModuleContent += `),`
+                            }
+                        }
+                        topModuleContent = topModuleContent.slice(0, -1);
+                        topModuleContent += `);`
+                    }
+                }
+            }
+        }
+
+        var subSystems = soc.buses[bus_index].subsystems
+        for (var subSystem_index in subSystems){
+            for (var slave_index in subSystems_map.get(subSystems[subSystem_index].id).slaves){
+                slave = subSystems_map.get(subSystems[subSystem_index].id).slaves[slave_index]
+                if(IPs_map.get(slave.type).IOs != undefined){
+                    for (IO_indx in IPs_map.get(slave.type).IOs){
+                        IO = IPs_map.get(slave.type).IOs[IO_indx]
+                        IP = IPs_map.get(slave.type)
+                        let IO_entry = IOs_arr.find(fruit => fruit.name === IO.name);
+                        let external = IP.externals.find(fruit => fruit.name === IO.ports[0].conn);
+                        if (external == undefined)
+                          continue;
+                        else
+                          console.log("YOO")
+                        size = external.size;
+                
+                        //create PADs
+                        for (i = 0; i < IO.ports.length; i++){
+                            if (isNaN(IO.ports[i].conn) == true){
+                                topModuleContent += `\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index};`
+                                if (IO.ports[i].type == "PAD"){
+                                    console.log("hello"+ IO.ports[i].conn)
+                                    let IO_PAD = IO_entry.ports.find(fruit => fruit.name === IO.ports[i].name)
+                                    if (IO_PAD.access == 1){
+                                        topModuleHeader += `,\n\tinput [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        testbench_header += `;\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
+                                    }
+                                    else if (IO_PAD.access == 0){
+                                        topModuleHeader += `,\n\toutput[${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        testbench_header += `;\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
+                                    } else if (IO_PAD.access == 2){
+                                        topModuleHeader += `,\n\tinout[${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        testbench_header += `;\n\ttri1 [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        // testbench_inst = testbench_inst.slice(0,-1);
+                        for (i = 0; i < size; i++){
+                            // instanitaion
+                            topModuleContent += `\n\t${IO_entry.name} ${IO_entry.name}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}_IO${IO_indx}_${i}(`
+                            for (j = 0; j < IO.ports.length; j++){
+                                if (isNaN (IO.ports[j].conn) == false)
+                                    topModuleContent += ` .${IO.ports[j].name}(1'b${IO.ports[j].conn}),` 
+                                else{
+                                        topModuleContent += ` .${IO.ports[j].name}(`
+                                        if (IO.ports[j].inverted == 1)
+                                            topModuleContent += `~`
+                                        topModuleContent += `${IO.ports[j].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        if (size > 1)
+                                            topModuleContent +=`[${i}]),`
+                                        else 
+                                            topModuleContent += `),`
+                                }
+                            }
+                            topModuleContent = topModuleContent.slice(0, -1);
+                            topModuleContent += `);`
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+
