@@ -4,11 +4,8 @@
 	|  \| | |_| |\ \ / / _ \ |_ \ __) |
 	| |\  |  _| | \ V /  __/___) / __/ 
 	|_| \_|_| |_|  \_/ \___|____/_____|
-
-	A One day project - Cairo May 2, 2020 
-	By Mohamed Shalan (mshalan@aucegypt.edu)
-	
 	Copyright 2020 Mohamed Shalan
+	
 	Licensed under the Apache License, Version 2.0 (the "License"); 
 	you may not use this file except in compliance with the License. 
 	You may obtain a copy of the License at:
@@ -22,6 +19,7 @@
 	limitations under the License.
 */
 /*
+	Started as a One day project on May 2, 2020 by Mohamed Shalan 
 	NfiVe32 is area optimized RV32IC core with the following features:
 	* Target clock frequency > 100MHz in 130nm technologies
 	* CPI ~ 3
