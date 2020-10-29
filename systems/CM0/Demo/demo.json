@@ -1,5 +1,5 @@
 {
-	"design": "Raptor_GF130",
+	"design": "Demo",
     "license": 1,
     "version": "1.0",
     "release_date": {
@@ -7,10 +7,6 @@
         "month": 5,
         "year": 2020
     },
-    "designer": {
-        "name": "Mohamed Shalan",
-        "email": "mshalan@a"
-	},
 	"masters_type": 1,
 	"masters":[
 		{ 

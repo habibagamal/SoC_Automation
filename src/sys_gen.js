@@ -1476,8 +1476,6 @@ function external_conections(IPs_map){
         var slaves = soc.buses[bus_index].slaves
         for (var slave_index in slaves){
             if(IPs_map.get(slaves[slave_index].type).connected_to != undefined){
-                console.log(IPs_map.get(slaves[slave_index].type).name)
-                console.log(IPs_map.get(slaves[slave_index].type).connected_to[0].placement)
                 connection = IPs_map.get(slaves[slave_index].type).connected_to;
 
                 if (slaves[slave_index].connected_to != undefined){
@@ -1717,8 +1715,6 @@ function IOsInstantiation(IPs_map){
                     let external = IP.externals.find(fruit => fruit.name === IO.ports[0].conn);
                     if (external == undefined)
                       continue;
-                    else
-                      console.log("YOO")
                     size = external.size;
             
                     //create PADs
@@ -1726,7 +1722,6 @@ function IOsInstantiation(IPs_map){
                         if (isNaN(IO.ports[i].conn) == true){
                             topModuleContent += `\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index};`
                             if (IO.ports[i].type == "PAD"){
-                                console.log("hello"+ IO.ports[i].conn)
                                 let IO_PAD = IO_entry.ports.find(fruit => fruit.name === IO.ports[i].name)
                                 let IP_PU = IO.ports.find(fruit => fruit.type === "PU")
                                 if (IO_PAD.access == 1){
@@ -1786,8 +1781,6 @@ function IOsInstantiation(IPs_map){
                         let external = IP.externals.find(fruit => fruit.name === IO.ports[0].conn);
                         if (external == undefined)
                           continue;
-                        else
-                          console.log("YOO")
                         size = external.size;
                 
                         //create PADs
@@ -1795,7 +1788,6 @@ function IOsInstantiation(IPs_map){
                             if (isNaN(IO.ports[i].conn) == true){
                                 topModuleContent += `\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index};`
                                 if (IO.ports[i].type == "PAD"){
-                                    console.log("hello"+ IO.ports[i].conn)
                                     let IO_PAD = IO_entry.ports.find(fruit => fruit.name === IO.ports[i].name)
                                     if (IO_PAD.access == 1){
                                         topModuleHeader += `,\n\tinput [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
