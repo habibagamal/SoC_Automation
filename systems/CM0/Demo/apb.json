@@ -8,10 +8,6 @@
         "month": 5,
         "year": 2020
     },
-    "designer": {
-        "naame": "Mohamed Shalan",
-        "email": "mshalan@"
-    },
     "bus_type": 1,
     "subpage_bits":4,
     "slaves" : [
@@ -19,16 +15,6 @@
             "type": 6,
             "description": "I2C Master 0",
             "connected_to": 0,
-            "cfg":{}
-        },
-        {
-            "type": 4,
-            "description": "UART 0",
-            "cfg":{}
-        },
-        {
-            "type": 4,
-            "description": "UART 1",
             "cfg":{}
         },
         {
