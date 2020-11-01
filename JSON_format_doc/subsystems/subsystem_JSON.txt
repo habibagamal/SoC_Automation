@@ -18,7 +18,7 @@
         "email": "designer email"
   },
  
-  "bus_type": number repsenting type of bus (0 = AHB, 1 = APB),
+  "bus_type": number repsenting type of bus (0 = AHB, 1 = APB, 2 = Wishbone),
   
   "subpage_bits": number of bits for the subpage field (must be multiple of 4),
 
