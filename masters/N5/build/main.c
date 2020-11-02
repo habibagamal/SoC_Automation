@@ -34,7 +34,7 @@ void timer_test(){
 	tmr_init(9, 99);
 	tmr_clearOVF();
 	tmr_enable();
-	while(tmr_getOVF == 0);
+	while(tmr_getOVF() == 0);
 	*DEBUG_REG = 0xa;
 	// GPIO_TEST(0xffff, 0xabcd);
 }
