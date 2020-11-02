@@ -6,7 +6,7 @@
 
         "id": "string field for master id",
 
-        "bus_type": numerical field (0 means AHB, 1 means APB),
+        "bus_type": numerical field (0 means AHB, 1 means APB, 2 means Wishbone),
 
         "files":[
             "filename1",

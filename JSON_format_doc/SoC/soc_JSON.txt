@@ -47,7 +47,7 @@
 		"vcd": "string field for the name of the vcd file"
     },
 
-    "address_space": numerical fiels for address size (must be a power of 2),
+    "address_space": numerical field for address size (must be a power of 2),
     
     "page_bits": number of bits for the page field (must be multiple of 4),
     
@@ -55,7 +55,7 @@
         {
               "id": unique numeric bus id with respect to all buses,
 
-              "type": number repsenting type of bus(0 = AHB, 1 = APB),  
+              "type": number representing type of bus(0 = AHB, 1 = APB, 2 = Wishbone),
 
               "starting_page": "hexadecimal value of starting page for the bus",
 
