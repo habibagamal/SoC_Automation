@@ -146,12 +146,15 @@ function createDir(Directory){
 }
 //var compiled = 0;
 
+console.log("Extracting Input parameters...")
 extractInputParameters()
 if(ip == undefined) throw new Error ("No IPs library was provided!")
 if(soc== undefined) throw new Error ("No SoC description was provided!")
+console.log("Validating Inputs of SoC...")
 validateInputSoC()
+console.log("Creating output directory...")
 createDir(Directory)
-console.log(`Done that`)
+console.log("Creating module headers...")
 
 topModuleHeader = `
 \`timescale 1ns/1ns
@@ -183,6 +186,7 @@ module soc_core_m${soc.masters.length}_b${soc.buses.length}(
 \tinput [0: 0] Input_irq,
 \toutput Output_DATA`
 
+console.log("Generating buses...")
 buses_gen()
 
 fs.writeFile(Directory+"soc_core_m"+soc.masters.length+"_b"+soc.buses.length+".v", module_header+module_declarations+module_assignments+module_content, (err) => {
@@ -195,7 +199,7 @@ topModuleHeader+=`);\n\n`
 topModuleContent+=moduleInstantiation
 topModuleContent+=`\n\n\nendmodule`
 
-// form_testbench()
+console.log("Forming testbench()...")
 
 fs.writeFile(Directory+"soc_m"+soc.masters.length+"_b"+soc.buses.length+".v", topModuleHeader+topModules+topModuleContent, (err) => {
     if (err)
@@ -206,7 +210,7 @@ fs.writeFile(Directory+"soc_m"+soc.masters.length+"_b"+soc.buses.length+".v", to
     //console.log(e.name)
     console.log(e.message)
 }*/
-
+console.log("Done.")
   
 
 function buses_gen(){
