@@ -2,9 +2,15 @@
 !IPs/**/*.v
 !IOs/**/*.v
 !masters/**/*.v
+masters/**/cm0.v
+masters/**/cortexm3ds_logic.v
+masters/**/ahb_master_mux.v
+masters/**/CORTEXM3INTEGRATIONDS.v
 **/*.lst
 .DS_Store
 compile.sh
 **/*.hex
 **/*.vvp
 **/*.vcd
+**/*.elf
+**/*.o

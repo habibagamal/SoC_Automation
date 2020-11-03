@@ -59,18 +59,19 @@ For instructions on how to write the JSON file for:
 ![](Images/flow.jpg)
 
 ## System Block Diagram
-This diagram represents [this example](./systems/CM0/Raptor)<br>
+This diagram represents [this example](./systems/CM0/Demo)<br>
 ![](Images/SoC.jpg)
 
 Go [here](https://developer.arm.com/) to download Arm Cortex M0, M3 files<br>
-Check this [poster](https://drive.google.com/file/d/1GBd_jf6H-ud2rCmiS8y-bdfOldHAYiDl/view?usp=sharing) and [video](https://www.youtube.com/watch?v=QFSN9ta08jg) presented in DAC 2020 Young Fellowship Program about the project
 
 ## Used Projects
 - Arbiter taken from [here](https://github.com/adki/gen_amba)
 
 ## To-do 
 - Datasheet generation
-- Hardening using openLane
+
+## References
+Check this [poster](https://drive.google.com/file/d/1GBd_jf6H-ud2rCmiS8y-bdfOldHAYiDl/view?usp=sharing) and [video](https://www.youtube.com/watch?v=QFSN9ta08jg) presented in DAC 2020 Young Fellowship Program about the project
 
 ## Authors
 * **Amr Gouhar** [agorararmard](https://github.com/agorararmard)
