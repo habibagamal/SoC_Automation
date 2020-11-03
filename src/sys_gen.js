@@ -1781,6 +1781,7 @@ function IOsInstantiation(IPs_map){
                     for (IO_indx in IPs_map.get(slave.type).IOs){
                         IO = IPs_map.get(slave.type).IOs[IO_indx]
                         IP = IPs_map.get(slave.type)
+                        let IP_PU = IO.ports.find(fruit => fruit.type === "PU")
                         let IO_entry = IOs_arr.find(fruit => fruit.name === IO.name);
                         let external = IP.externals.find(fruit => fruit.name === IO.ports[0].conn);
                         if (external == undefined)
@@ -1790,7 +1791,7 @@ function IOsInstantiation(IPs_map){
                         //create PADs
                         for (i = 0; i < IO.ports.length; i++){
                             if (isNaN(IO.ports[i].conn) == true){
-                                topModuleContent += `\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_S${slave_index};`
+                                topModuleContent += `\n\twire [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index};`
                                 if (IO.ports[i].type == "PAD"){
                                     let IO_PAD = IO_entry.ports.find(fruit => fruit.name === IO.ports[i].name)
                                     if (IO_PAD.access == 1){
@@ -1804,7 +1805,10 @@ function IOsInstantiation(IPs_map){
                                         testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
                                     } else if (IO_PAD.access == 2){
                                         topModuleHeader += `,\n\tinout[${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
-                                        testbench_header += `;\n\ttri1 [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`
+                                        if (IP_PU != undefined && IP_PU.conn == 1)
+                                            testbench_header += `;\n\ttri1 [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`    
+                                        else 
+                                            testbench_header += `;\n\ttri [${size-1}:0] ${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}`                       
                                         testbench_inst += `\n\t\t.${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}(${IO.ports[i].conn}_Sys${bus_index}_SS${subSystem_index}_S${slave_index}),`
                                     }
                                     
@@ -1839,4 +1843,5 @@ function IOsInstantiation(IPs_map){
     }
 
 }
+
 
