@@ -9,5 +9,5 @@
 #define     UART_BASE_ADDR_1       0x40200000
 #define     APB_SPI_BASE_ADDR_0       0x40300000
 #define     PWM_BASE_ADDR_0       0x40400000
-#define     AHB_GPIO_BASE_ADDR_0      0x40200000
+#define     AHB_GPIO_BASE_ADDR_0      0x48000000
 #define     TIMER_BASE_ADDR_0      		0x40500000

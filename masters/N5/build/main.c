@@ -17,8 +17,8 @@ void I2C_test();
 
 int main(){
 
-	GPIO_TEST(0xffff, GPIO_DATA);
-	// timer_test();
+	// GPIO_TEST(0xffff, GPIO_DATA);
+	I2C_test();
   	return 0;
 }
 
