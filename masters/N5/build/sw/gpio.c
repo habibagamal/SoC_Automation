@@ -1,12 +1,13 @@
+#include "base_addr.h"
 // #include "dbgio_drv.h"
 //#include "../../sw/gpio_drv.h"
 
 void gpio_set_dir(unsigned int d) {
-	*((unsigned int *)(0x48000010)) = d;
+	*((unsigned int *)(AHB_GPIO_BASE_ADDR_0+0x10)) = d;
 }
 
 void gpio_write(unsigned int d) {
-	*((unsigned int *)(0x48000004)) = d;
+	*((unsigned int *)(AHB_GPIO_BASE_ADDR_0+0x04)) = d;
 }
 
 unsigned int gpio_read(){

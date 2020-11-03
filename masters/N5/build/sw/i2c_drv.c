@@ -28,35 +28,3 @@ int i2c_send(unsigned char saddr, unsigned char sdata){
     else
         return 1;
 }
-
-// void i2c_send(unsigned char daddr, unsigned char saddr, unsigned char sdata){
-//     int volatile y;
-//     *(I2C_TX) = daddr;
-//     *(I2C_CMD) = I2C_CMD_STA | I2C_CMD_WR;
-//     while( ((*I2C_STAT) & I2C_STAT_TIP) != 0 );
-//     //(*I2C_STAT) & I2C_STAT_TIP ;
-
-//     if( ((*I2C_STAT) & I2C_STAT_RXACK)  ) {
-//         *(I2C_CMD) = I2C_CMD_STO;
-//         return 0;
-//     }
-
-    
-//     *(I2C_TX) = saddr;
-//     *(I2C_CMD) = I2C_CMD_WR;
-//     while( (*I2C_STAT) & I2C_STAT_TIP );
-    
-//     if( ((*I2C_STAT) & I2C_STAT_RXACK)  ) {
-//         *(I2C_CMD) = I2C_CMD_STO;
-//         return 0;
-//     }
-
-//     *(I2C_TX) = sdata;
-//     *(I2C_CMD) = I2C_CMD_WR;
-//     while( (*I2C_STAT) & I2C_STAT_TIP );
-//     *(I2C_CMD) = I2C_CMD_STO;
-//     if( ((*I2C_STAT) & I2C_STAT_RXACK ) )
-//         return 0;
-//     else
-//         return 1;
-// }
