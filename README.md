@@ -21,6 +21,7 @@ node ./src/sys_gen.js -soc <soc.json> -mastersLib <masters_lib.json> -IPlib <ip_
 ```
 - Omit any fields you don't need in the above command.
 - If there are no subsystems or real masters, you can ommit "-subsystem <subsystem.json>" or "-mastersLib <masters_lib.json>", respectively, from the command.
+- You can use [this shell script](compile.sh) to run SoCGen, run iverilog, then open scansion waveform viewer
 
 ## Expected input
 For instructions on how to write the JSON file for: 
