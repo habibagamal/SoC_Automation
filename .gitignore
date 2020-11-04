@@ -8,10 +8,10 @@ masters/**/ahb_master_mux.v
 masters/**/CORTEXM3INTEGRATIONDS.v
 **/*.lst
 .DS_Store
-compile.sh
 **/*.hex
 **/*.vvp
 **/*.vcd
 **/*.elf
 **/*.o
 **/*.bin
+**/base_addr.h

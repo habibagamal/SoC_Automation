@@ -25,14 +25,14 @@
 #define     SPI_DONE_BIT        0x0
 #define     SPI_DONE_SIZE       0x1
 
-#if APB_SPI_BASE_ADDR_0 != INVALID_ADDR
-    #define SPI_BASE_ADDR APB_SPI_BASE_ADDR_0
-#else
-    #define SPI_BASE_ADDR AHB_SPI_BASE_ADDR_0
-#endif
+// #if APB2SPI_BASE_ADDR != INVALID_ADDR
+//     #define SPI_BASE_ADDR APB_SPI_BASE_ADDR
+// #else
+//     #define SPI_BASE_ADDR AHB_SPI_BASE_ADDR
+// #endif
 
-unsigned int volatile * const SPI_CTRL = (unsigned int *) (SPI_BASE_ADDR + SPI_CTRL_REG);
-unsigned int volatile * const SPI_DATA = (unsigned int *) (SPI_BASE_ADDR + SPI_DATA_REG);
-unsigned int volatile * const SPI_STATUS = (unsigned int *) (SPI_BASE_ADDR + SPI_STATUS_REG);
-unsigned int volatile * const SPI_CFG = (unsigned int *) (SPI_BASE_ADDR + SPI_CFG_REG);
-//unsigned int volatile * const SPI_PRESCALE = (unsigned int *) (SPI_BASE_ADDR + SPI_PRESCALE_REG);
+unsigned int volatile * const SPI_CTRL = (unsigned int *) (APB_APB2SPI_BASE_ADDR + SPI_CTRL_REG);
+unsigned int volatile * const SPI_DATA = (unsigned int *) (APB_APB2SPI_BASE_ADDR + SPI_DATA_REG);
+unsigned int volatile * const SPI_STATUS = (unsigned int *) (APB_APB2SPI_BASE_ADDR + SPI_STATUS_REG);
+unsigned int volatile * const SPI_CFG = (unsigned int *) (APB_APB2SPI_BASE_ADDR + SPI_CFG_REG);
+//unsigned int volatile * const SPI_PRESCALE = (unsigned int *) (APB_APB2SPI_BASE_ADDR + SPI_PRESCALE_REG);

@@ -187,7 +187,7 @@ module soc_core_m${soc.masters.length}_b${soc.buses.length}(
 \toutput Output_DATA`
 
 console.log("Generating buses...")
-buses_gen()
+buses_gen(soc.page_bits, soc.address_space)
 
 fs.writeFile(Directory+"soc_core_m"+soc.masters.length+"_b"+soc.buses.length+".v", module_header+module_declarations+module_assignments+module_content, (err) => {
   if (err)
@@ -213,10 +213,10 @@ fs.writeFile(Directory+"soc_m"+soc.masters.length+"_b"+soc.buses.length+".v", to
 console.log("Done.")
   
 
-function buses_gen(){
-	var IPs_map = new Map();
+function buses_gen(page_bits, address_size){
+    var IPs_map = new Map();
+    let base_addr_string = "#ifndef NULL\n\t#define NULL 0\n#endif\n#define INVALID_ADDR NULL\n";
     for (bus_index in soc.buses){
-
         var slaves = soc.buses[bus_index].slaves
         var subSystems = soc.buses[bus_index].subsystems
         
@@ -244,6 +244,11 @@ function buses_gen(){
                           })
                     }
                 }
+                base_addr_string += `#define AHB_${ip[type].name}_BASE_ADDR 0x${slaves[slave_index].page}`
+                for (var i = page_bits/4; i < address_size/4; i++){
+                    base_addr_string += `0`
+                }
+                base_addr_string += `\n`
             }
         }
         //add library subsystems to subsystems map
@@ -260,6 +265,7 @@ function buses_gen(){
 
         //Adding sub-systems IPs
         for(var subSystem_index in subSystems){
+            var count = 0;
             for (var slave_index in subSystems_map.get(subSystems[subSystem_index].id).slaves){
             var type = subSystems_map.get(subSystems[subSystem_index].id).slaves[slave_index].type
             if(ip[type] == undefined) throw new Error("IP type "+toString(type)+" doesn't exist in the IPs library")
@@ -284,8 +290,19 @@ function buses_gen(){
                           })
                     }
                 }
+                base_addr_string += `#define APB_${ip[type].name}_BASE_ADDR 0x${subSystems[subSystem_index].page}${count.toString(16)}`
+                for (var i = page_bits/4 + 1; i < address_size/4; i++){
+                    base_addr_string += `0`
+                }
+                base_addr_string += `\n`
+                count += 1;
             }
         }
+
+        fs.writeFile(Directory+"base_addr.h", base_addr_string, (err) => {
+            if (err)
+                throw err; 
+          })
 
         //Bus selection
         if(soc.buses[bus_index].type == 0){

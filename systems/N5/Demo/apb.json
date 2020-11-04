@@ -1,0 +1,40 @@
+{
+    "id": 0,
+    "design": "Raptor_APB_SYS",
+    "license": 1,
+    "version": "1.0",
+    "release_date": {
+        "day": 1,
+        "month": 5,
+        "year": 2020
+    },
+    "bus_type": 1,
+    "subpage_bits":4,
+    "slaves" : [
+        {
+            "type": 6,
+            "description": "I2C Master 0",
+            "connected_to": 0,
+            "cfg":{}
+        },
+        {
+            "type": 7,
+            "description": "SPI Master 0",
+            "connected_to": 0,
+            "cfg":{}
+        },
+        
+        {
+            "type": 0,
+            "description": "PWM 0",
+            "connected_to": 0,
+            "cfg":{}
+        },
+        {
+            "type": 1,
+            "description": "TIMER 0",
+            "cfg":{}
+        }
+        
+    ]
+}

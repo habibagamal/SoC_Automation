@@ -1,13 +1,18 @@
 #include "base_addr.h"
 // #include "dbgio_drv.h"
 //#include "../../sw/gpio_drv.h"
+#if APB_GPIO_BASE_ADDR != INVALID_ADDR
+    #define GPIO_BASE_ADDR APB_GPIO_BASE_ADDR
+#else
+    #define GPIO_BASE_ADDR AHB_GPIO_BASE_ADDR
+#endif
 
 void gpio_set_dir(unsigned int d) {
-	*((unsigned int *)(AHB_GPIO_BASE_ADDR_0+0x10)) = d;
+	*((unsigned int *)(GPIO_BASE_ADDR+0x10)) = d;
 }
 
 void gpio_write(unsigned int d) {
-	*((unsigned int *)(AHB_GPIO_BASE_ADDR_0+0x04)) = d;
+	*((unsigned int *)(GPIO_BASE_ADDR+0x04)) = d;
 }
 
 unsigned int gpio_read(){

@@ -1,6 +1,11 @@
 #include "base_addr.h"
 #include "macros.h"
 
+#if APB_PWM32_BASE_ADDR != INVALID_ADDR
+    #define PWM32_BASE_ADDR APB_PWM32_BASE_ADDR
+#else
+    #define PWM32_BASE_ADDR AHB_PWM32_BASE_ADDR
+#endif
 // + PWMPRE (RW - 16): clock prescalar (tmer_clk = clk / (PRE+1))
 // + PWMCMP1 (RW - 4): PWM Compare register 1 -- period
 // + PWMCMP2 (RW - 8): PWM Compare register 1 -- duty cycle
@@ -15,7 +20,7 @@
 #define     PWM_EN_BIT          0x0
 #define     PWM_EN_SIZE         0x1
 
-unsigned int volatile * const PWM_CTRL = (unsigned int *) (PWM_BASE_ADDR_0 + PWM_CTRL_REG);
-unsigned int volatile * const PWM_PRE = (unsigned int *) (PWM_BASE_ADDR_0 + PWM_PRE_REG);
-unsigned int volatile * const PWM_CMP1 = (unsigned int *) (PWM_BASE_ADDR_0 + PWM_CMP1_REG);
-unsigned int volatile * const PWM_CMP2 = (unsigned int *) (PWM_BASE_ADDR_0 + PWM_CMP2_REG);
+unsigned int volatile * const PWM_CTRL = (unsigned int *) (PWM32_BASE_ADDR + PWM_CTRL_REG);
+unsigned int volatile * const PWM_PRE = (unsigned int *) (PWM32_BASE_ADDR + PWM_PRE_REG);
+unsigned int volatile * const PWM_CMP1 = (unsigned int *) (PWM32_BASE_ADDR + PWM_CMP1_REG);
+unsigned int volatile * const PWM_CMP2 = (unsigned int *) (PWM32_BASE_ADDR + PWM_CMP2_REG);
