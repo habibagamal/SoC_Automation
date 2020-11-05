@@ -44,6 +44,9 @@ For instructions on how to write the JSON file for:
 --------------------------
 #### For APB
 ![](Images/APB.png)
+- The page field is used as the base address of buses, AHB slaves and subsystems. 
+- The subpage field is used as the base address of slaves on APB
+- The peripherial field is used as the slave's register offset
 
 ## Currently supported features
 - Having multiple masters (tested on dummy masters)<br>
