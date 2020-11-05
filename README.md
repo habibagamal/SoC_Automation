@@ -60,10 +60,7 @@ For instructions on how to write the JSON file for:
 - Using IPs that are not APB or AHB compatible<br>
 ![](Images/IP_wrapper.jpg)
 - Having soft IPs and hard IPs<br>
-![](Images/IPs.jpg)
-![](Images/IPs2.jpg)
 - Having I/O pads library that is not technology specific (for behavioral simulation)<br>
-![](Images/IOpads.jpg)
 - Specify the placement levels of external components (testbench or soc_core)<br>
 ![](Images/externalComponent.jpg)
 ![](Images/externalComponent2.jpg)
@@ -86,7 +83,8 @@ Go [here](https://developer.arm.com/) to download Arm Cortex M0, M3 files<br>
 - Datasheet generation
 
 ## References
-Check this [poster](https://drive.google.com/file/d/1GBd_jf6H-ud2rCmiS8y-bdfOldHAYiDl/view?usp=sharing) and [video](https://www.youtube.com/watch?v=QFSN9ta08jg) presented in DAC 2020 Young Fellowship Program about the project
+- Check this [poster](https://drive.google.com/file/d/1GBd_jf6H-ud2rCmiS8y-bdfOldHAYiDl/view?usp=sharing) and [video](https://www.youtube.com/watch?v=QFSN9ta08jg) presented in DAC 2020 Young Fellowship Program about the project
+- Check this [presentation](https://www.youtube.com/watch?v=JaDumrEhuTU&list=PLItVYhgea-kEV15gg-D_rm7VG8bg20_XV&index=4), [slides](https://github.com/woset-workshop/woset-workshop.github.io/blob/master/PDFs/2020/a04-slides.pdf) and [paper](https://github.com/woset-workshop/woset-workshop.github.io/blob/master/PDFs/2020/a04.pdf) presented in Workshop on Open-source EDA Technology (WOSET) 2020 collocated with International Conference on Computer Aided Design (ICCAD) 2020 
 
 ## Authors
 * **Amr Gouhar** [agorararmard](https://github.com/agorararmard)
