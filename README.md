@@ -54,7 +54,6 @@ For instructions on how to write the JSON file for:
 - Having multiple buses connected to the same master<br>
 ![](Images/multi_buses.jpg)
 - Having multiple APBs on the same AHB<br>
-![](Images/APBs.jpg)
 - Using created and open source verification IPs for testing<br>
 ![](Images/IP_VIP.jpg)
 - Using IPs that are not APB or AHB compatible<br>
