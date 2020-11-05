@@ -48,14 +48,25 @@ For instructions on how to write the JSON file for:
 ## Currently supported features
 - Having multiple masters (tested on dummy masters)<br>
 ![](Images/multi_masters.jpg)
-- Having multiple buses<br>
+- Having multiple buses connected to the same master<br>
 ![](Images/multi_buses.jpg)
+- Having multiple APBs on the same AHB
+![](Images/APBs.jpg)
 - Using created and open source verification IPs for testing<br>
 ![](Images/IP_VIP.jpg)
 - Using IPs that are not APB or AHB compatible<br>
 ![](Images/IP_wrapper.jpg)
+- Having soft IPs and hard IPs
+![](Images/IPs.jpg)
+![](Images/IPs2.jpg)
+- Having I/O pads library that is not technology specific (for behavioral simulation)
+![](Images/IOpads.jpg)
+- Specify the placement levels of external components (testbench or soc_core)
+![](Images/externalComponent.jpg)
+![](Images/externalComponent2.jpg)
 - Auto-generating self-checking testbench
-
+- Generating hierarchicial testbenches
+![](Images/HierarchicalTesting.jpg)
 ## Flow
 ![](Images/flow.jpg)
 
