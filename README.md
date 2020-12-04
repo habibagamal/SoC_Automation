@@ -41,7 +41,7 @@ For instructions on how to write the JSON file for:
 ## Memory Address Sketch
 #### For AHB
 <img src="Images/AHB.png" width=65%>
---------------------------
+
 #### For APB
 <img src="Images/APB.png" width=65%>
 
