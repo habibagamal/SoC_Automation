@@ -1,23 +1,23 @@
 # SoCGen
 
-A truly no man in the loop.<br><br> 
-This program automates SoC design through taking JSON input and generating verilog HDL for the SoC. 
+A truly no man in the loop SoC generator.<br><br> 
+SoCGen automates SoC design through taking JSON input and generating verilog HDL for the SoC. 
 We're working on the integration with [OpenLane](https://github.com/efabless/openlane) to generate the final GDS2.<br>
-Currently we support AMBA AHB for the high-speed (main) bus and APB for the low speed peripherals bus. 
+Currently we support AMBA AHB-Lite for the high-speed (main) bus and APB for the low speed peripherals bus. 
 
 ## Getting Started
 
 This instruction will get you a copy of the project up and running on your local machine for development and testing purposes.
 ```shell
-git clone https://github.com/habibagamal/SoC_automation
+% git clone https://github.com/habibagamal/SoC_automation
 ```
 If you need help with how to run the program
 ```shell
-node ./src/sys_gen.js -help 
+% node ./src/sys_gen.js -help 
 ```
 To generate the full SoC .v files
 ```shell
-node ./src/sys_gen.js -soc <soc.json> -mastersLib <masters_lib.json> -IPlib <ip_lib.json> -subsystem <subsystem.json> -outDir <output directory> 
+% node ./src/sys_gen.js -soc <soc.json> -mastersLib <masters_lib.json> -IPlib <ip_lib.json> -subsystem <subsystem.json> -outDir <output directory> 
 ```
 - Omit any fields you don't need in the above command.
 - If there are no subsystems or real masters, you can ommit "-subsystem <subsystem.json>" or "-mastersLib <masters_lib.json>", respectively, from the command.
@@ -40,10 +40,11 @@ For instructions on how to write the JSON file for:
 
 ## Memory Address Sketch
 #### For AHB
-![](Images/AHB.png)
+<img src="Images/AHB.png" width=65%>
 --------------------------
 #### For APB
-![](Images/APB.png)
+<img src="Images/APB.png" width=65%>
+
 - The page field is used as the base address of buses, AHB slaves and subsystems. 
 - The subpage field is used as the base address of slaves on APB
 - The peripherial field is used as the slave's register offset

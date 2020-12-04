@@ -51,7 +51,7 @@ if(process.argv.length<3){
 }
 
 if(process.argv[2] == "-help"){
-    console.log(`-help: get all commands
+    console.log(`-help: Obvious!
 -outDir Directory: to set the output directory
 -soc JSON: to set the json for the main SoC
 -subsystem JSONs: to set the files of the external subsystems used (those that are not already in the library)
@@ -59,7 +59,8 @@ if(process.argv[2] == "-help"){
 -mastersLib JSON: to set the masters library location
 -SUBlib JSON: to set the subsystems library location`);
 
-throw new Error ("Code Terminated..")
+//throw new Error ("Code Terminated..")
+process.exit(1);
 }
 
 function extractInputParameters(){
